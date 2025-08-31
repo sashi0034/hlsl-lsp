@@ -2483,8 +2483,7 @@ function parseExprTerm2(parser: ParserState): NodeExprTerm2 | undefined {
 // BNF: EXPRVALUE     ::= 'void' | CONSTRUCTCALL | FUNCCALL | VARACCESS | CAST | LITERAL | '(' ASSIGN ')'
 function parseExprValue(parser: ParserState): ParseResult<NodeExprValue> {
     const cast = parseCast(parser);
-    if (cast === ParseFailure.Pending) return ParseFailure.Pending;
-    if (cast !== ParseFailure.Mismatch) return cast;
+    if (cast !== undefined) return cast;
 
     if (parser.next().text === '(') {
         parser.commit(HighlightForToken.Operator);
@@ -2638,23 +2637,33 @@ function parseIdentifierWithColon(parser: ParserState): TokenObject | undefined 
 }
 
 // BNF: CAST          ::= '(' TYPE ')' EXPRVALUE
-function parseCast(parser: ParserState): ParseResult<NodeCast> {
-    if (parser.next().text !== 'cast') return ParseFailure.Mismatch;
+function parseCast(parser: ParserState): NodeCast | undefined {
     const rangeStart = parser.next();
-    parser.commit(HighlightForToken.Keyword);
 
-    if (parser.expect('<', HighlightForToken.Operator) === false) return ParseFailure.Pending;
+    if (parser.next().text !== '(') {
+        parser.backtrack(rangeStart);
+        return undefined;
+    }
 
-    const type = expectType(parser);
-    if (type === undefined) return ParseFailure.Pending;
+    parser.commit(HighlightForToken.Operator);
 
-    if (parser.expect('>', HighlightForToken.Operator) === false) return ParseFailure.Pending;
-    if (parser.expect('(', HighlightForToken.Operator) === false) return ParseFailure.Pending;
+    const type = parseType(parser);
+    if (type === undefined) {
+        parser.backtrack(rangeStart);
+        return undefined;
+    }
+
+    if (parser.next().text !== ')') {
+        parser.backtrack(rangeStart);
+        return undefined;
+    }
+
+    parser.commit(HighlightForToken.Operator);
 
     const assign = expectAssign(parser);
-    if (assign === undefined) return ParseFailure.Pending;
-
-    parser.expect(')', HighlightForToken.Operator);
+    if (assign === undefined) {
+        return undefined;
+    }
 
     return {
         nodeName: NodeName.Cast,
