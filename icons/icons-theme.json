@@ -1,17 +1,17 @@
 {
     "iconDefinitions": {
-        "angelscript-predefined": {
-            "iconPath": "./angelscript-predefined.png"
+        "hlsl-predefined": {
+            "iconPath": "./hlsl-predefined.png"
         },
-        "angelscript": {
-            "iconPath": "./angelscript.png"
+        "hlsl": {
+            "iconPath": "./hlsl.png"
         }
     },
     "fileExtensions": {
-        "as": "angelscript",
-        "as.predefined": "angelscript-predefined"
+        "as": "hlsl",
+        "as.predefined": "hlsl-predefined"
     },
     "fileNames": {
-        "as.predefined": "angelscript-predefined"
+        "as.predefined": "hlsl-predefined"
     }
 }

@@ -31,8 +31,8 @@ export function activate(context: ExtensionContext) {
     const clientOptions: LanguageClientOptions = {
         // Register the server for plain text documents
         documentSelector: [
-            {scheme: 'file', language: 'angelscript'},
-            {scheme: 'file', language: 'angelscript-predefined'}
+            {scheme: 'file', language: 'hlsl'},
+            {scheme: 'file', language: 'hlsl-predefined'}
         ],
         synchronize: {
             // Notify the server about file changes to '.clientrc files contained in the workspace
@@ -43,7 +43,7 @@ export function activate(context: ExtensionContext) {
     // Create the language client and start the client.
     s_client = new LanguageClient(
         'angelScript',
-        'AngelScript Language Server',
+        'HLSL Language Server',
         serverOptions,
         clientOptions
     );
@@ -68,7 +68,7 @@ export function deactivate(): Thenable<void> | undefined {
 
 // -----------------------------------------------
 
-class AngelScriptConfigurationProvider implements DebugConfigurationProvider {
+class HLSLConfigurationProvider implements DebugConfigurationProvider {
     resolveDebugConfiguration(folder: WorkspaceFolder | undefined, config: DebugConfiguration, token?: CancellationToken): ProviderResult<DebugConfiguration> {
         return config;
     }
@@ -78,13 +78,13 @@ class AngelScriptConfigurationProvider implements DebugConfigurationProvider {
     }
 }
 
-class AngelScriptDebugAdapterServerDescriptorFactory implements vscode.DebugAdapterDescriptorFactory {
+class HLSLDebugAdapterServerDescriptorFactory implements vscode.DebugAdapterDescriptorFactory {
     async createDebugAdapterDescriptor(session: vscode.DebugSession, executable: vscode.DebugAdapterExecutable | undefined): Promise<vscode.DebugAdapterDescriptor> {
         return new vscode.DebugAdapterServer(session.configuration.port, session.configuration.address);
     }
 }
 
-class AngelScriptDebugAdapterTrackerFactory implements vscode.DebugAdapterTrackerFactory {
+class HLSLDebugAdapterTrackerFactory implements vscode.DebugAdapterTrackerFactory {
 	createDebugAdapterTracker(session: vscode.DebugSession): ProviderResult<vscode.DebugAdapterTracker> {
 		return {};
 	}
@@ -103,7 +103,7 @@ function subscribeCommands(context: ExtensionContext) {
             }
         })
     );
-    context.subscriptions.push(debug.registerDebugConfigurationProvider("angel-lsp-dap", new AngelScriptConfigurationProvider()));
-    context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("angel-lsp-dap", new AngelScriptDebugAdapterServerDescriptorFactory()));
-    context.subscriptions.push(debug.registerDebugAdapterTrackerFactory("angel-lsp-dap", new AngelScriptDebugAdapterTrackerFactory()));
+    context.subscriptions.push(debug.registerDebugConfigurationProvider("angel-lsp-dap", new HLSLConfigurationProvider()));
+    context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("angel-lsp-dap", new HLSLDebugAdapterServerDescriptorFactory()));
+    context.subscriptions.push(debug.registerDebugAdapterTrackerFactory("angel-lsp-dap", new HLSLDebugAdapterTrackerFactory()));
 }

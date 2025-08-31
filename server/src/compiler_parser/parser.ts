@@ -1,4 +1,4 @@
-// https://www.angelcode.com/angelscript/sdk/docs/manual/doc_script_bnf.html
+// https://www.angelcode.com/hlsl/sdk/docs/manual/doc_script_bnf.html
 
 import {
     AccessModifier,

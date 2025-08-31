@@ -200,7 +200,7 @@ export class SymbolScope {
 
     /**
      * Whether this scope is a pure namespace that does not have a node.
-     * Note: AngelScript allows defining a class and a namespace with the same name simultaneously.
+     * Note: HLSL allows defining a class and a namespace with the same name simultaneously.
      */
     public isPureNamespaceScope(): boolean {
         return this.linkedNode === undefined && !this.isFunctionHolderScope() && !this.isAnonymousScope();

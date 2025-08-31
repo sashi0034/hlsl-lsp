@@ -1,6 +1,6 @@
 The BNF used in this project is originally based on the following BNF:
 
-https://www.angelcode.com/angelscript/sdk/docs/manual/doc_script_bnf.html
+https://www.angelcode.com/hlsl/sdk/docs/manual/doc_script_bnf.html
 
 The BNF is defined in `server/bnf.txt`.
 

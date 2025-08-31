@@ -1,7 +1,7 @@
 {
     "name": "angel-lsp",
-    "displayName": "AngelScript Language Server",
-    "description": "VSCode extensions for AngelScript Language Server",
+    "displayName": "HLSL Language Server",
+    "description": "VSCode extensions for HLSL Language Server",
     "author": "sashi0034",
     "license": "MIT",
     "version": "0.3.61",
@@ -15,7 +15,7 @@
         "Debuggers"
     ],
     "keywords": [
-        "angelscript"
+        "hlsl"
     ],
     "bugs": {
         "url": "https://github.com/sashi0034/angel-lsp/issues"
@@ -23,10 +23,10 @@
     "engines": {
         "vscode": "^1.75.0"
     },
-    "icon": "icons/angelscript.png",
+    "icon": "icons/hlsl.png",
     "activationEvents": [
-        "onLanguage:angelscript",
-        "onLanguage:angelscript-predefined",
+        "onLanguage:hlsl",
+        "onLanguage:hlsl-predefined",
         "workspaceContains:**/*.as",
         "onDebug"
     ],
@@ -34,21 +34,21 @@
     "contributes": {
         "languages": [
             {
-                "id": "angelscript",
+                "id": "hlsl",
                 "extensions": [
                     ".as"
                 ],
                 "configuration": "./language-configuration.json",
                 "aliases": [
-                    "AngelScript"
+                    "HLSL"
                 ],
                 "icon": {
-                    "light": "icons/angelscript.png",
-                    "dark": "icons/angelscript.png"
+                    "light": "icons/hlsl.png",
+                    "dark": "icons/hlsl.png"
                 }
             },
             {
-                "id": "angelscript-predefined",
+                "id": "hlsl-predefined",
                 "extensions": [
                     ".as.predefined"
                 ],
@@ -57,36 +57,36 @@
                 ],
                 "configuration": "./language-configuration.json",
                 "aliases": [
-                    "AngelScript Predefined"
+                    "HLSL Predefined"
                 ],
                 "icon": {
-                    "light": "icons/angelscript-predefined.png",
-                    "dark": "icons/angelscript-predefined.png"
+                    "light": "icons/hlsl-predefined.png",
+                    "dark": "icons/hlsl-predefined.png"
                 }
             }
         ],
         "grammars": [
             {
-                "language": "angelscript",
-                "scopeName": "source.angelscript",
-                "path": "./angelscript.tmLanguage.json"
+                "language": "hlsl",
+                "scopeName": "source.hlsl",
+                "path": "./hlsl.tmLanguage.json"
             },
             {
-                "language": "angelscript-predefined",
-                "scopeName": "source.angelscript",
-                "path": "./angelscript.tmLanguage.json"
+                "language": "hlsl-predefined",
+                "scopeName": "source.hlsl",
+                "path": "./hlsl.tmLanguage.json"
             }
         ],
         "snippets": [
             {
-                "language": "angelscript",
+                "language": "hlsl",
                 "path": "./snippets.json"
             }
         ],
         "commands": [
             {
                 "command": "angelScript.debug.printGlobalScope",
-                "title": "AngelScript: Print Global Scope in Current File"
+                "title": "HLSL: Print Global Scope in Current File"
             }
         ],
         "configurationDefaults": {
@@ -96,13 +96,13 @@
                     "directive": "#ffe020"
                 }
             },
-            "[angelscript]": {
+            "[hlsl]": {
                 "editor.formatOnType": true
             }
         },
         "configuration": {
             "type": "object",
-            "title": "AngelScript configuration",
+            "title": "HLSL configuration",
             "properties": {
                 "angelScript.suppressAnalyzerErrors": {
                     "scope": "window",
@@ -156,7 +156,7 @@
                     "scope": "window",
                     "type": "boolean",
                     "default": true,
-                    "description": "Controls whether the 'property' keyword is required for virtual property accessors. When set to true, functions must explicitly use the 'property' keyword to be treated as property accessors. When false, compatibility mode for AngelScript prior to v2.33.1 is enabled, and functions with 'get_' or 'set_' prefixes are automatically treated as property accessors."
+                    "description": "Controls whether the 'property' keyword is required for virtual property accessors. When set to true, functions must explicitly use the 'property' keyword to be treated as property accessors. When false, compatibility mode for HLSL prior to v2.33.1 is enabled, and functions with 'get_' or 'set_' prefixes are automatically treated as property accessors."
                 },
                 "angelScript.allowUnicodeIdentifiers": {
                     "scope": "window",
@@ -221,16 +221,16 @@
         },
         "breakpoints": [
             {
-                "language": "angelscript"
+                "language": "hlsl"
             }
         ],
         "debuggers": [
             {
                 "type": "angel-lsp-dap",
                 "languages": [
-                    "angelscript"
+                    "hlsl"
                 ],
-                "label": "AngelScript Debugger (DAP)",
+                "label": "HLSL Debugger (DAP)",
                 "configurationAttributes": {
                     "attach": {
                         "properties": {
@@ -253,19 +253,19 @@
                     {
                         "type": "angel-lsp-dap",
                         "request": "attach",
-                        "name": "Attach to AngelScript DAP server",
+                        "name": "Attach to HLSL DAP server",
                         "address": "localhost",
                         "port": 27979
                     }
                 ],
                 "configurationSnippets": [
                     {
-                        "label": "AngelScript Debug: Attach",
+                        "label": "HLSL Debug: Attach",
                         "description": "Configuration for attaching to a DAP server",
                         "body": {
                             "type": "angel-lsp-dap",
                             "request": "attach",
-                            "name": "Attach to AngelScript DAP server",
+                            "name": "Attach to HLSL DAP server",
                             "address": "localhost",
                             "port": 27979
                         }

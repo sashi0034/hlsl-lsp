@@ -3,7 +3,7 @@ import {getGlobalSettings} from "../core/settings";
 import {TextLocation} from "../compiler_tokenizer/textLocation";
 import {ActionHint} from "./actionHint";
 
-const sourceName = 'AngelScript - Analyzer';
+const sourceName = 'HLSL - Analyzer';
 
 const s_diagnostics: lsp.Diagnostic[] = [];
 

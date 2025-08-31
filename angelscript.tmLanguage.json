@@ -1,58 +1,58 @@
 {
     "_license": "This file is a modified version of a file from https://github.com/Hazelight/vscode-unreal-angelscript, originally licensed under the MIT License.",
-    "name": "angelscript",
-    "scopeName": "source.angelscript",
+    "name": "hlsl",
+    "scopeName": "source.hlsl",
     "patterns": [
         {
-            "name": "keyword.declaration.angelscript",
+            "name": "keyword.declaration.hlsl",
             "match": "\\b(class|struct|delegate|event|import|enum|namespace)\\b"
         },
         {
-            "name": "keyword.statement.angelscript",
+            "name": "keyword.statement.hlsl",
             "match": "\\b(for|if|return|continue|break|default|else|while|case|switch|fallthrough)\\b"
         },
         {
-            "name": "keyword.type.angelscript",
+            "name": "keyword.type.hlsl",
             "match": "\\b(void|auto|const|property|final|override|mixin|local)\\b"
         },
         {
-            "name": "keyword.code.angelscript",
+            "name": "keyword.code.hlsl",
             "match": "\\b(Cast|Super)\\b"
         },
         {
-            "name": "keyword.code.angelscript.NAME_None.name",
+            "name": "keyword.code.hlsl.NAME_None.name",
             "match": "\\bNAME_None\\b"
         },
         {
-            "name": "keyword.code.angelscript.null.reference",
+            "name": "keyword.code.hlsl.null.reference",
             "match": "\\bnull\\b"
         },
         {
-            "name": "keyword.code.angelscript.this.reference",
+            "name": "keyword.code.hlsl.this.reference",
             "match": "\\bthis\\b"
         },
         {
-            "name": "keyword.code.angelscript.true.boolean",
+            "name": "keyword.code.hlsl.true.boolean",
             "match": "\\btrue\\b"
         },
         {
-            "name": "keyword.code.angelscript.false.boolean",
+            "name": "keyword.code.hlsl.false.boolean",
             "match": "\\bfalse\\b"
         },
         {
-            "name": "keyword.access.angelscript",
+            "name": "keyword.access.hlsl",
             "match": "\\b(private|protected|access)\\b"
         },
         {
-            "name": "storage.type.primitive.angelscript",
+            "name": "storage.type.primitive.hlsl",
             "match": "\\b(int|float|double|bool|int32|int64|int16|int8|uint32|uint64|uint16|uint8|float32|float64)\\b"
         },
         {
             "match": "::",
-            "name": "punctuation.separator.namespace.access.angelscript"
+            "name": "punctuation.separator.namespace.access.hlsl"
         },
         {
-            "name": "meta.preprocessor.angelsript",
+            "name": "meta.preprocessor.hlsl",
             "begin": "^\\s*#",
             "end": "(?=\\n)"
         },
@@ -69,36 +69,36 @@
                     "name": "keyword.operator.quantifier.regexp"
                 }
             },
-            "name": "string.quoted.double.angelscript",
+            "name": "string.quoted.double.hlsl",
             "patterns": [
                 {
                     "include": "#string_escaped_char"
                 },
                 {
                     "match": "{{",
-                    "name": "string.quoted.double.angelscript"
+                    "name": "string.quoted.double.hlsl"
                 },
                 {
                     "match": "}}",
-                    "name": "string.quoted.double.angelscript"
+                    "name": "string.quoted.double.hlsl"
                 },
                 {
                     "begin": "{",
                     "beginCaptures": {
                         "0": {
-                            "name": "keyword.formatexpression.angelscript"
+                            "name": "keyword.formatexpression.hlsl"
                         }
                     },
                     "patterns": [
                         {
-                            "include": "source.angelscript"
+                            "include": "source.hlsl"
                         }
                     ],
-                    "name": "meta.embedded.expression.angelscript",
+                    "name": "meta.embedded.expression.hlsl",
                     "end": "=?\\s*(:(.?[=<>^])?[0-9dxXbconeEfFgG=,+-\\.^%#\\s]*)?(}|(?=\")|(?=\n))",
                     "endCaptures": {
                         "0": {
-                            "name": "keyword.formatexpression.angelscript"
+                            "name": "keyword.formatexpression.hlsl"
                         }
                     }
                 }
@@ -121,26 +121,26 @@
         "comments": {
             "patterns": [
                 {
-                    "name": "comment.block.angelscript",
+                    "name": "comment.block.hlsl",
                     "begin": "(\\/\\*)",
                     "beginCaptures": {
                         "1": {
-                            "name": "punctuation.definition.comment.begin.angelscript"
+                            "name": "punctuation.definition.comment.begin.hlsl"
                         }
                     },
                     "end": "(\\*\\/)",
                     "endCaptures": {
                         "1": {
-                            "name": "punctuation.definition.comment.end.angelscript"
+                            "name": "punctuation.definition.comment.end.hlsl"
                         }
                     }
                 },
                 {
-                    "name": "comment.line.double-slash.angelscript",
+                    "name": "comment.line.double-slash.hlsl",
                     "begin": "(\\/\\/)",
                     "beginCaptures": {
                         "1": {
-                            "name": "punctuation.definition.comment.angelscript"
+                            "name": "punctuation.definition.comment.hlsl"
                         }
                     },
                     "end": "(?=\\n)",
@@ -163,10 +163,10 @@
                                     "match": "(\\G0[xX])([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)?((?:(?<=[0-9a-fA-F])\\.|\\.(?=[0-9a-fA-F])))([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)?((?<!')([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)))?([lLfF](?!\\w))?$",
                                     "captures": {
                                         "1": {
-                                            "name": "keyword.other.unit.hexadecimal.angelscript"
+                                            "name": "keyword.other.unit.hexadecimal.hlsl"
                                         },
                                         "2": {
-                                            "name": "constant.numeric.hexadecimal.angelscript",
+                                            "name": "constant.numeric.hexadecimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -178,10 +178,10 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "4": {
-                                            "name": "constant.numeric.hexadecimal.angelscript"
+                                            "name": "constant.numeric.hexadecimal.hlsl"
                                         },
                                         "5": {
-                                            "name": "constant.numeric.hexadecimal.angelscript",
+                                            "name": "constant.numeric.hexadecimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -193,16 +193,16 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "8": {
-                                            "name": "keyword.other.unit.exponent.hexadecimal.angelscript"
+                                            "name": "keyword.other.unit.exponent.hexadecimal.hlsl"
                                         },
                                         "9": {
-                                            "name": "keyword.operator.plus.exponent.hexadecimal.angelscript"
+                                            "name": "keyword.operator.plus.exponent.hexadecimal.hlsl"
                                         },
                                         "10": {
-                                            "name": "keyword.operator.minus.exponent.hexadecimal.angelscript"
+                                            "name": "keyword.operator.minus.exponent.hexadecimal.hlsl"
                                         },
                                         "11": {
-                                            "name": "constant.numeric.exponent.hexadecimal.angelscript",
+                                            "name": "constant.numeric.exponent.hexadecimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -211,7 +211,7 @@
                                             ]
                                         },
                                         "12": {
-                                            "name": "keyword.other.unit.suffix.floating-point.angelscript"
+                                            "name": "keyword.other.unit.suffix.floating-point.hlsl"
                                         }
                                     }
                                 },
@@ -219,7 +219,7 @@
                                     "match": "(\\G(?=[0-9.])(?!0[xXbB]))([0-9](?:[0-9]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)?((?:(?<=[0-9])\\.|\\.(?=[0-9])))([0-9](?:[0-9]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)?((?<!')([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)))?([lLfF](?!\\w))?$",
                                     "captures": {
                                         "2": {
-                                            "name": "constant.numeric.decimal.angelscript",
+                                            "name": "constant.numeric.decimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -231,10 +231,10 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "4": {
-                                            "name": "constant.numeric.decimal.point.angelscript"
+                                            "name": "constant.numeric.decimal.point.hlsl"
                                         },
                                         "5": {
-                                            "name": "constant.numeric.decimal.angelscript",
+                                            "name": "constant.numeric.decimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -246,16 +246,16 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "8": {
-                                            "name": "keyword.other.unit.exponent.decimal.angelscript"
+                                            "name": "keyword.other.unit.exponent.decimal.hlsl"
                                         },
                                         "9": {
-                                            "name": "keyword.operator.plus.exponent.decimal.angelscript"
+                                            "name": "keyword.operator.plus.exponent.decimal.hlsl"
                                         },
                                         "10": {
-                                            "name": "keyword.operator.minus.exponent.decimal.angelscript"
+                                            "name": "keyword.operator.minus.exponent.decimal.hlsl"
                                         },
                                         "11": {
-                                            "name": "constant.numeric.exponent.decimal.angelscript",
+                                            "name": "constant.numeric.exponent.decimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -264,7 +264,7 @@
                                             ]
                                         },
                                         "12": {
-                                            "name": "keyword.other.unit.suffix.floating-point.angelscript"
+                                            "name": "keyword.other.unit.suffix.floating-point.hlsl"
                                         }
                                     }
                                 },
@@ -272,10 +272,10 @@
                                     "match": "(\\G0[bB])([01](?:[01]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)((?:(?:(?:(?:(?:[uU]|[uU]ll?)|[uU]LL?)|ll?[uU]?)|LL?[uU]?)|[fF])(?!\\w))?$",
                                     "captures": {
                                         "1": {
-                                            "name": "keyword.other.unit.binary.angelscript"
+                                            "name": "keyword.other.unit.binary.hlsl"
                                         },
                                         "2": {
-                                            "name": "constant.numeric.binary.angelscript",
+                                            "name": "constant.numeric.binary.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -287,7 +287,7 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "4": {
-                                            "name": "keyword.other.unit.suffix.integer.angelscript"
+                                            "name": "keyword.other.unit.suffix.integer.hlsl"
                                         }
                                     }
                                 },
@@ -295,10 +295,10 @@
                                     "match": "(\\G0[oO])((?:[0-7]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))+)((?:(?:(?:(?:(?:[uU]|[uU]ll?)|[uU]LL?)|ll?[uU]?)|LL?[uU]?)|[fF])(?!\\w))?$",
                                     "captures": {
                                         "1": {
-                                            "name": "keyword.other.unit.octal.angelscript"
+                                            "name": "keyword.other.unit.octal.hlsl"
                                         },
                                         "2": {
-                                            "name": "constant.numeric.octal.angelscript",
+                                            "name": "constant.numeric.octal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -310,7 +310,7 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "4": {
-                                            "name": "keyword.other.unit.suffix.integer.angelscript"
+                                            "name": "keyword.other.unit.suffix.integer.hlsl"
                                         }
                                     }
                                 },
@@ -318,10 +318,10 @@
                                     "match": "(\\G0[xX])([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)((?<!')([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)))?((?:(?:(?:(?:(?:[uU]|[uU]ll?)|[uU]LL?)|ll?[uU]?)|LL?[uU]?)|[fF])(?!\\w))?$",
                                     "captures": {
                                         "1": {
-                                            "name": "keyword.other.unit.hexadecimal.angelscript"
+                                            "name": "keyword.other.unit.hexadecimal.hlsl"
                                         },
                                         "2": {
-                                            "name": "constant.numeric.hexadecimal.angelscript",
+                                            "name": "constant.numeric.hexadecimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -333,16 +333,16 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "5": {
-                                            "name": "keyword.other.unit.exponent.hexadecimal.angelscript"
+                                            "name": "keyword.other.unit.exponent.hexadecimal.hlsl"
                                         },
                                         "6": {
-                                            "name": "keyword.operator.plus.exponent.hexadecimal.angelscript"
+                                            "name": "keyword.operator.plus.exponent.hexadecimal.hlsl"
                                         },
                                         "7": {
-                                            "name": "keyword.operator.minus.exponent.hexadecimal.angelscript"
+                                            "name": "keyword.operator.minus.exponent.hexadecimal.hlsl"
                                         },
                                         "8": {
-                                            "name": "constant.numeric.exponent.hexadecimal.angelscript",
+                                            "name": "constant.numeric.exponent.hexadecimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -351,7 +351,7 @@
                                             ]
                                         },
                                         "9": {
-                                            "name": "keyword.other.unit.suffix.integer.angelscript"
+                                            "name": "keyword.other.unit.suffix.integer.hlsl"
                                         }
                                     }
                                 },
@@ -359,7 +359,7 @@
                                     "match": "(\\G(?=[0-9.])(?!0[xXbB]))([0-9](?:[0-9]|((?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)((?<!')([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])))*)))?((?:(?:(?:(?:(?:[uU]|[uU]ll?)|[uU]LL?)|ll?[uU]?)|LL?[uU]?)|[fF])(?!\\w))?$",
                                     "captures": {
                                         "2": {
-                                            "name": "constant.numeric.decimal.angelscript",
+                                            "name": "constant.numeric.decimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -371,16 +371,16 @@
                                             "name": "punctuation.separator.constant.numeric"
                                         },
                                         "5": {
-                                            "name": "keyword.other.unit.exponent.decimal.angelscript"
+                                            "name": "keyword.other.unit.exponent.decimal.hlsl"
                                         },
                                         "6": {
-                                            "name": "keyword.operator.plus.exponent.decimal.angelscript"
+                                            "name": "keyword.operator.plus.exponent.decimal.hlsl"
                                         },
                                         "7": {
-                                            "name": "keyword.operator.minus.exponent.decimal.angelscript"
+                                            "name": "keyword.operator.minus.exponent.decimal.hlsl"
                                         },
                                         "8": {
-                                            "name": "constant.numeric.exponent.decimal.angelscript",
+                                            "name": "constant.numeric.exponent.decimal.hlsl",
                                             "patterns": [
                                                 {
                                                     "match": "(?<=[0-9a-fA-F])'(?=[0-9a-fA-F])",
@@ -389,13 +389,13 @@
                                             ]
                                         },
                                         "9": {
-                                            "name": "keyword.other.unit.suffix.integer.angelscript"
+                                            "name": "keyword.other.unit.suffix.integer.hlsl"
                                         }
                                     }
                                 },
                                 {
                                     "match": "(?:(?:[0-9a-zA-Z_\\.]|')|(?<=[eEpP])[+-])+",
-                                    "name": "constant.numeric.decimal.angelscript"
+                                    "name": "constant.numeric.decimal.hlsl"
                                 }
                             ]
                         }
@@ -407,11 +407,11 @@
             "patterns": [
                 {
                     "match": "(?x)\\\\ (\n\\\\\t\t\t |\n[abefnprtv'\"?]   |\n[0-3]\\d{,2}\t |\n[4-7]\\d?\t\t|\nx[a-fA-F0-9]{,2} |\nu[a-fA-F0-9]{,4} |\nU[a-fA-F0-9]{,8} )",
-                    "name": "constant.character.escape.angelscript"
+                    "name": "constant.character.escape.hlsl"
                 },
                 {
                     "match": "\\\\.",
-                    "name": "invalid.illegal.unknown-escape.angelscript"
+                    "name": "invalid.illegal.unknown-escape.hlsl"
                 }
             ]
         },
@@ -421,7 +421,7 @@
                     "match": "(\\\\)\\n",
                     "captures": {
                         "1": {
-                            "name": "constant.character.escape.line-continuation.angelscript"
+                            "name": "constant.character.escape.line-continuation.hlsl"
                         }
                     }
                 }
@@ -433,16 +433,16 @@
                     "begin": "\"",
                     "beginCaptures": {
                         "0": {
-                            "name": "punctuation.definition.string.begin.angelscript"
+                            "name": "punctuation.definition.string.begin.hlsl"
                         }
                     },
                     "end": "\"",
                     "endCaptures": {
                         "0": {
-                            "name": "punctuation.definition.string.end.angelscript"
+                            "name": "punctuation.definition.string.end.hlsl"
                         }
                     },
-                    "name": "string.quoted.double.angelscript",
+                    "name": "string.quoted.double.hlsl",
                     "patterns": [
                         {
                             "include": "#string_escaped_char"
@@ -456,16 +456,16 @@
                     "begin": "'",
                     "beginCaptures": {
                         "0": {
-                            "name": "punctuation.definition.string.begin.angelscript"
+                            "name": "punctuation.definition.string.begin.hlsl"
                         }
                     },
                     "end": "'",
                     "endCaptures": {
                         "0": {
-                            "name": "punctuation.definition.string.end.angelscript"
+                            "name": "punctuation.definition.string.end.hlsl"
                         }
                     },
-                    "name": "string.quoted.single.angelscript",
+                    "name": "string.quoted.single.hlsl",
                     "patterns": [
                         {
                             "include": "#string_escaped_char"
@@ -481,55 +481,55 @@
             "patterns": [
                 {
                     "match": "--",
-                    "name": "keyword.operator.decrement.angelscript"
+                    "name": "keyword.operator.decrement.hlsl"
                 },
                 {
                     "match": "\\+\\+",
-                    "name": "keyword.operator.increment.angelscript"
+                    "name": "keyword.operator.increment.hlsl"
                 },
                 {
                     "match": "%=|\\+=|-=|\\*=|(?<!\\()/=",
-                    "name": "keyword.operator.assignment.compound.angelscript"
+                    "name": "keyword.operator.assignment.compound.hlsl"
                 },
                 {
                     "match": "&=|\\^=|<<=|>>=|\\|=",
-                    "name": "keyword.operator.assignment.compound.bitwise.angelscript"
+                    "name": "keyword.operator.assignment.compound.bitwise.hlsl"
                 },
                 {
                     "match": "<<|>>",
-                    "name": "keyword.operator.bitwise.shift.angelscript"
+                    "name": "keyword.operator.bitwise.shift.hlsl"
                 },
                 {
                     "match": "!=|<=|>=|==|<|>",
-                    "name": "keyword.operator.comparison.angelscript"
+                    "name": "keyword.operator.comparison.hlsl"
                 },
                 {
                     "match": "&&|!|\\|\\|",
-                    "name": "keyword.operator.logical.angelscript"
+                    "name": "keyword.operator.logical.hlsl"
                 },
                 {
                     "match": "&|\\||\\^|~",
-                    "name": "keyword.operator.angelscript"
+                    "name": "keyword.operator.hlsl"
                 },
                 {
                     "match": "=",
-                    "name": "keyword.operator.assignment.angelscript"
+                    "name": "keyword.operator.assignment.hlsl"
                 },
                 {
                     "match": "%|\\*|/|-|\\+",
-                    "name": "keyword.operator.angelscript"
+                    "name": "keyword.operator.hlsl"
                 },
                 {
                     "begin": "(\\?)",
                     "beginCaptures": {
                         "1": {
-                            "name": "keyword.operator.ternary.angelscript"
+                            "name": "keyword.operator.ternary.hlsl"
                         }
                     },
                     "end": "(:)",
                     "endCaptures": {
                         "1": {
-                            "name": "keyword.operator.ternary.angelscript"
+                            "name": "keyword.operator.ternary.hlsl"
                         }
                     },
                     "patterns": [

@@ -1,6 +1,6 @@
 {
 	"name": "angel-lsp",
-	"description": "AngelScript Language Server for VisualStudioCode",
+	"description": "HLSL Language Server for VisualStudioCode",
 	"version": "1.0.0",
 	"author": "sashi0034",
 	"license": "MIT",
@@ -17,6 +17,6 @@
 	},
 	"scripts": {
 		"test": "mocha",
-		"bundle": "tsc && npx esbuild src/server.ts --bundle --outfile=angelscript-language-server.js --minify --platform=node"
+		"bundle": "tsc && npx esbuild src/server.ts --bundle --outfile=hlsl-language-server.js --minify --platform=node"
 	}
 }

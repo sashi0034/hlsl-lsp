@@ -21,7 +21,7 @@ function pushDiagnostic(range: lsp.Range, message: string, severity: lsp.Diagnos
         range: structuredClone(range),
         message: message,
         severity: severity,
-        source: "AngelScript",
+        source: "HLSL",
     });
 }
 

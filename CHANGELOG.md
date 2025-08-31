@@ -13,7 +13,7 @@
 
 ## [0.3.50] 2025/08/16
 
-- Support for `using namespace` in AngelScript 2.38.0
+- Support for `using namespace` in HLSL 2.38.0
 
 ## [0.3.47] 2025/07/08
 
@@ -55,7 +55,7 @@
 
 ## [0.3.23] 2025/03/11
 
-- Add some missing features in AngelScript [#108](https://github.com/sashi0034/angel-lsp/pull/108), [#109](https://github.com/sashi0034/angel-lsp/pull/109), [#110](https://github.com/sashi0034/angel-lsp/pull/110) by Paril
+- Add some missing features in HLSL [#108](https://github.com/sashi0034/angel-lsp/pull/108), [#109](https://github.com/sashi0034/angel-lsp/pull/109), [#110](https://github.com/sashi0034/angel-lsp/pull/110) by Paril
 
 ## [0.3.22] 2025/03/10
 

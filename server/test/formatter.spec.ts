@@ -34,7 +34,7 @@ function testFormatter(content: string, expectedContent: string) {
         const record = inspector.getRecord(uri);
 
         const textEdits = formatFile(record.content, record.rawTokens, record.ast);
-        const document = TextDocument.create(uri, 'angelscript', 0, content);
+        const document = TextDocument.create(uri, 'hlsl', 0, content);
         const actualContent = TextDocument.applyEdits(document, textEdits);
 
         if (expectedContent.includes('\t')) {
