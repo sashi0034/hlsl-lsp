@@ -3,7 +3,7 @@ import {expectError, expectSuccess} from "./utils";
 describe('analyzer/variadicArguments', () => {
     expectSuccess([
         {
-            uri: 'file:///path/to/as.predefined',
+            uri: 'file:///path/to/hlsl.predefined',
             content: `
                 class Str { }
                 void format(const Str& in str, const Str& in ...);
@@ -24,7 +24,7 @@ describe('analyzer/variadicArguments', () => {
 
     expectError([
         {
-            uri: 'file:///path/to/as.predefined',
+            uri: 'file:///path/to/hlsl.predefined',
             content: `
                 class Str { }
                 void format(const Str& in str, const Str& in ...);
@@ -43,7 +43,7 @@ describe('analyzer/variadicArguments', () => {
 
     expectError([
         {
-            uri: 'file:///path/to/as.predefined',
+            uri: 'file:///path/to/hlsl.predefined',
             content: `
                 class Str { }
                 void format(const Str& in str, const Str& in ...);
@@ -62,7 +62,7 @@ describe('analyzer/variadicArguments', () => {
 
     expectError([
         {
-            uri: 'file:///path/to/as.predefined',
+            uri: 'file:///path/to/hlsl.predefined',
             content: `
                 class Str { }
                 void format(const Str& in str, const Str& in ...);

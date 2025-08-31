@@ -33,7 +33,7 @@ function expectFailure(content: string) {
     testParser(content, false);
 }
 
-// TODO: Separate tests for as.predefined?
+// TODO: Separate tests for hlsl.predefined?
 
 describe("Parser", () => {
     expectSuccess("void foo() {}");

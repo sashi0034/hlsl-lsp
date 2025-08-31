@@ -11,13 +11,13 @@ import {provideSemanticTokens} from "./services/semanticTokens";
 import {provideReferences} from "./services/reference";
 import {TextEdit} from "vscode-languageserver-types/lib/esm/main";
 import {Location} from "vscode-languageserver";
-import {resetGlobalSettings} from "./core/settings";
-import {formatFile} from "./formatter/formatter";
+import {getGlobalSettings, resetGlobalSettings} from "./core/settings";
+// import {formatFile} from "./formatter/formatter";
 import {provideSignatureHelp} from "./services/signatureHelp";
 import {TextLocation, TextPosition, TextRange} from "./compiler_tokenizer/textLocation";
 import {provideInlayHint} from "./services/inlayHint";
 import {DiagnosticSeverity} from "vscode-languageserver-types";
-import {CodeAction} from "vscode-languageserver-protocol";
+import {CodeAction, PublishDiagnosticsParams} from "vscode-languageserver-protocol";
 import {provideCodeAction} from "./services/codeAction";
 import {provideCompletionOfToken} from "./services/completionExtension";
 import {provideCompletionResolve} from "./services/completionResolve";
@@ -83,7 +83,8 @@ s_connection.onInitialize((params: lsp.InitializeParams) => {
                 resolveProvider: true,
                 triggerCharacters: [
                     '.', ':', // for autocomplete symbol
-                    '/' // for autocomplete file path
+                    '/', // for autocomplete file path
+                    '>' // for allow operator '->'
                 ]
             },
             // diagnosticProvider: {
@@ -133,7 +134,7 @@ s_connection.onInitialize((params: lsp.InitializeParams) => {
 });
 
 function reloadSettings() {
-    s_connection.workspace.getConfiguration('angelScript').then((config) => {
+    s_connection.workspace.getConfiguration('hlsl').then((config) => {
         resetGlobalSettings(config);
         s_inspector.reinspectAllFiles();
         if (s_hasWorkspaceDiagnosticsRefreshCapability) {
@@ -218,7 +219,7 @@ s_connection.onDidChangeTextDocument((params) => {
         moveInlayHintByChanges(inlayHints, params.contentChanges);
     }
 
-    // connection.sendRequest('angelScript/smartBackspace', 'TODO! Implement this?');
+    // connection.sendRequest('hlsl/smartBackspace', 'TODO! Implement this?');
 });
 
 s_connection.onDidCloseTextDocument(params => {
@@ -450,11 +451,11 @@ s_connection.onSignatureHelp((params) => {
 
 // -----------------------------------------------
 // Document Formatting Provider
-s_connection.onDocumentFormatting((params) => {
-    s_inspector.flushRecord();
-    const record = s_inspector.getRecord(params.textDocument.uri);
-    return formatFile(record.content, record.rawTokens, record.ast);
-});
+// s_connection.onDocumentFormatting((params) => {
+//     s_inspector.flushRecord();
+//     const record = s_inspector.getRecord(params.textDocument.uri);
+//     return formatFile(record.content, record.rawTokens, record.ast);
+// });
 
 s_connection.onExecuteCommand((params) => {
 
@@ -478,7 +479,7 @@ s_connection.onDocumentOnTypeFormatting((params) => {
 // -----------------------------------------------
 // Extended Features
 
-s_connection.onRequest('angelScript/printGlobalScope', params => {
+s_connection.onRequest('hlsl/printGlobalScope', params => {
     const uri = params.uri as string;
 
     const globalScope = s_inspector.getRecord(uri).analyzerScope.globalScope;
@@ -495,4 +496,8 @@ s_connection.onRequest('angelScript/printGlobalScope', params => {
 // Listen on the connection
 s_connection.listen();
 
-s_inspector.registerDiagnosticsCallback(s_connection.sendDiagnostics);
+s_inspector.registerDiagnosticsCallback((params: PublishDiagnosticsParams) => {
+    if (getGlobalSettings().disableDiagnositcs === false) {
+        s_connection.sendDiagnostics(params);
+    }
+});

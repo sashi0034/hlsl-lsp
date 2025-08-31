@@ -6,12 +6,6 @@ export enum AccessModifier {
     Protected = 'Protected',
 }
 
-export enum TypeModifier {
-    In = 'In',
-    Out = 'Out',
-    InOut = 'InOut',
-}
-
 export enum ReferenceModifier {
     At = 'At',
     AtConst = 'AtConst',
@@ -38,23 +32,32 @@ export enum NodeName {
     Using = 'Using',
     Namespace = 'Namespace',
     Enum = 'Enum',
+    Struct = 'Struct',
     Class = 'Class',
     TypeDef = 'TypeDef',
     Func = 'Func',
     Interface = 'Interface',
     Var = 'Var',
     Import = 'Import',
+    VarTail = 'VarTail',
+    RscDecl = 'RscDecl',
+    Buffer = 'Buffer',
+    BufferMember = 'BufferMember',
     FuncDef = 'FuncDef',
     VirtualProp = 'VirtualProp',
     Mixin = 'Mixin',
     IntfMethod = 'IntfMethod',
     StatBlock = 'StatBlock',
+    Param = 'Param',
     ParamList = 'ParamList',
     TypeMod = 'TypeMod',
     Type = 'Type',
     InitList = 'InitList',
     Scope = 'Scope',
     DataType = 'DataType',
+    Attr = 'Attr',
+    Register = 'Register',
+    PackOffset = 'PackOffset',
     PrimType = 'PrimType',
     FuncAttr = 'FuncAttr',
     Statement = 'Statement',
@@ -106,22 +109,21 @@ export interface NodeBase {
     readonly nodeRange: TokenRange;
 }
 
-// BNF: SCRIPT        ::= {IMPORT | ENUM | TYPEDEF | CLASS | MIXIN | INTERFACE | FUNCDEF | VIRTPROP | VAR | FUNC | NAMESPACE | USING | ';'}
+// BNF: SCRIPT        ::= {USING | NAMESPACE | ENUM | TYPEDEF | STRUCT | CLASS | INTERFACE | VAR | FUNC | BUFFER | RSCDECL | ';'}
 export type NodeScript = NodeScriptMember[];
 
 export type NodeScriptMember =
-    NodeImport
-    | NodeEnum
-    | NodeTypeDef
-    | NodeClass
-    | NodeMixin
-    | NodeInterface
-    | NodeFuncDef
-    | NodeVirtualProp
-    | NodeVar
-    | NodeFunc
-    | NodeNamespace
-    | NodeUsing;
+    NodeUsing |
+    NodeNamespace |
+    NodeEnum |
+    NodeTypeDef |
+    NodeStruct |
+    NodeClass |
+    NodeInterface |
+    NodeVar |
+    NodeFunc |
+    NodeBuffer |
+    NodeResDecl;
 
 // BNF: USING         ::= 'using' 'namespace' IDENTIFIER ('::' IDENTIFIER)* ';'
 export interface NodeUsing extends NodeBase {
@@ -136,7 +138,7 @@ export interface NodeNamespace extends NodeBase {
     readonly script: NodeScript
 }
 
-// BNF: ENUM          ::= {'shared' | 'external'} 'enum' IDENTIFIER [ ':' ('int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64') ] (';' | ('{' IDENTIFIER ['=' EXPR] {',' IDENTIFIER ['=' EXPR]} '}'))
+// BNF: ENUM          ::= 'enum' IDENTIFIER [ ':' ('int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64') ] (';' | ('{' IDENTIFIER ['=' EXPR] {',' IDENTIFIER ['=' EXPR]} '}' ';'))
 export interface NodeEnum extends NodeBase {
     readonly nodeName: NodeName.Enum;
     readonly scopeRange: TokenRange;
@@ -151,16 +153,23 @@ export interface ParsedEnumMember {
     readonly expr: NodeExpr | undefined
 }
 
-// BNF: CLASS         ::= {'shared' | 'abstract' | 'final' | 'external'} 'class' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {VIRTPROP | FUNC | VAR | FUNCDEF} '}'))
+// BNF: STRUCT        ::= 'struct' IDENTIFIER [('{' {VAR | FUNC} '}')] ';'
+export interface NodeStruct extends NodeBase {
+    readonly nodeName: NodeName.Struct;
+    readonly identifier: TokenObject;
+    readonly scopeRange: TokenRange;
+    readonly memberList: (NodeVar | NodeFunc)[];
+}
+
+// BNF: CLASS         ::= 'class' IDENTIFIER [':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] (';' | ('{' {FUNC | VAR} '}' ';'))
 export interface NodeClass extends NodeBase {
     readonly nodeName: NodeName.Class;
     readonly scopeRange: TokenRange;
-    readonly metadata: TokenObject[][];
     readonly entity: EntityAttribute | undefined;
     readonly identifier: TokenObject;
     readonly typeTemplates: NodeType[] | undefined;
     readonly baseList: ClassBasePart[];
-    readonly memberList: (NodeVirtualProp | NodeVar | NodeFunc | NodeFuncDef)[];
+    readonly memberList: (NodeFunc | NodeVar)[];
 }
 
 export interface ClassBasePart {
@@ -168,14 +177,15 @@ export interface ClassBasePart {
     readonly identifier: TokenObject | undefined;
 }
 
-// BNF: TYPEDEF       ::= 'typedef' PRIMTYPE IDENTIFIER ';'
+// BNF: TYPEDEF       ::= 'typedef' TYPE IDENTIFIER ';'
+// TODO
 export interface NodeTypeDef extends NodeBase {
     readonly nodeName: NodeName.TypeDef;
     readonly type: TokenObject;
     readonly identifier: TokenObject;
 }
 
-// BNF: FUNC          ::= {'shared' | 'external'} ['private' | 'protected'] [((TYPE ['&']) | '~')] IDENTIFIER PARAMLIST [LISTPATTERN] ['const'] FUNCATTR (';' | STATBLOCK)
+// BNF: FUNC          ::= {ATTR} TYPE IDENTIFIER PARAMLIST [':' SEMANTIC] (';' | STATBLOCK)
 export interface NodeFunc extends NodeBase {
     readonly nodeName: NodeName.Func;
     readonly entity: EntityAttribute | undefined;
@@ -215,7 +225,7 @@ export function isFuncHeadReturnValue(head: FuncHead): head is FuncHeadReturnVal
     return head !== funcHeadDestructor && head !== funcHeadConstructor;
 }
 
-// BNF: INTERFACE     ::= {'external' | 'shared'} 'interface' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {VIRTPROP | INTFMTHD} '}'))
+// BNF: INTERFACE     ::= 'interface' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {INTFMTHD} '}' ';'))
 export interface NodeInterface extends NodeBase {
     readonly nodeName: NodeName.Interface;
     readonly entity: EntityAttribute | undefined;
@@ -224,12 +234,16 @@ export interface NodeInterface extends NodeBase {
     readonly memberList: (NodeVirtualProp | NodeIntfMethod)[];
 }
 
-// BNF: VAR           ::= ['private' | 'protected'] TYPE IDENTIFIER [( '=' (INITLIST | ASSIGN)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | ASSIGN)) | ARGLIST]} ';'
+// BNF: VAR           ::= {ATTR} ['groupshared'] [INTERPOLATION] TYPE IDENTIFIER { ARRAYDIM } [VARTAIL] {',' IDENTIFIER { ARRAYDIM } [VARTAIL]} ';'
 export interface NodeVar extends NodeBase {
-    readonly nodeName: NodeName.Var
-    readonly accessor: AccessModifier | undefined,
-    readonly type: NodeType,
-    readonly variables: ParsedVariableInitializer[];
+    readonly nodeName: NodeName.Var;
+    readonly attrList: NodeAttr[] | undefined;
+    readonly groupShared: boolean;
+    readonly interpolation: InterpolationModifier | undefined;
+    readonly type: NodeType;
+
+    readonly variables: ParsedVariableInitializer[]; // TODO: REMOVE
+    // readonly varList: VariableInitializerPart[]; // TODO: USE IT
 }
 
 // IDENTIFIER [( '=' (INITLIST | ASSIGN)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | ASSIGN)) | ARGLIST]}
@@ -238,7 +252,15 @@ export interface ParsedVariableInitializer {
     readonly initializer: NodeInitList | NodeAssign | NodeArgList | undefined;
 }
 
+// IDENTIFIER { ARRAYDIM } [VARTAIL] {',' IDENTIFIER { ARRAYDIM } [VARTAIL]}
+export interface VariableInitializerPart {
+    readonly identifier: TokenObject;
+    readonly arrayDim: (NodeAssign | undefined)[] | undefined;
+    readonly varTail: NodeVarTail | undefined;
+}
+
 // BNF: IMPORT        ::= 'import' TYPE ['&'] IDENTIFIER PARAMLIST FUNCATTR 'from' STRING ';'
+// TODO: REMOVE IT!
 export interface NodeImport extends NodeBase {
     readonly nodeName: NodeName.Import;
     readonly type: NodeType;
@@ -249,7 +271,49 @@ export interface NodeImport extends NodeBase {
     readonly path: TokenObject;
 }
 
-// BNF: FUNCDEF       ::= {'external' | 'shared'} 'funcdef' TYPE ['&'] IDENTIFIER PARAMLIST ';'
+// BNF: VARTAIL       ::= ['=' (INITLIST | ASSIGN) | ARGLIST] [':' SEMANTIC] [REGISTER] [PACKOFFSET]
+export interface NodeVarTail extends NodeBase {
+    readonly nodeName: NodeName.VarTail;
+    readonly initializer: NodeInitList | NodeAssign | NodeArgList | undefined;
+    readonly semantic: TokenObject | undefined;
+    readonly register: TokenObject | undefined;
+    readonly packOffset: TokenObject | undefined;
+}
+
+// BNF: ARRAYDIM      ::= '[' [ASSIGN] ']'
+
+// BNF: RSCDECL       ::= {ATTR} RSCTYPE IDENTIFIER { ARRAYDIM } [REGISTER] ';'
+export interface NodeResDecl extends NodeBase {
+    readonly nodeName: NodeName.RscDecl;
+    readonly attrList: NodeArgList | undefined;
+    readonly resourceType: NodeType;
+    readonly identifier: TokenObject;
+    readonly arrayDim: (NodeAssign | undefined)[];
+    readonly register: NodeRegister | undefined;
+}
+
+// BNF: BUFFER        ::= ('cbuffer' | 'tbuffer') IDENTIFIER [REGISTER] '{' {BUFFERMEMBER} '}'
+export interface NodeBuffer extends NodeBase {
+    readonly nodeName: NodeName.Buffer;
+    readonly bufferType: 'c' | 't';
+    readonly identifier: TokenObject;
+    readonly register: NodeRegister | undefined;
+    readonly bufferMember: NodeBufferMember[];
+}
+
+// BNF: BUFFERMEMBER  ::= [MATRIXLAYOUT] [INTERPOLATION] TYPE IDENTIFIER { ARRAYDIM } [PACKOFFSET] ';'
+export interface NodeBufferMember extends NodeBase {
+    readonly nodeName: NodeName.BufferMember;
+    readonly matrixLayout: MatrixLayoutModifier | undefined;
+    readonly interpolation: InterpolationModifier | undefined;
+    readonly type: NodeType;
+    readonly identifier: TokenObject;
+    readonly arrayDim: (NodeAssign | undefined)[];
+    readonly packOffset: NodePackOffset | undefined;
+}
+
+// BNF: FUNCDEF       ::= TYPE IDENTIFIER PARAMLIST ';'
+// TODO: REMOVE IT!
 export interface NodeFuncDef extends NodeBase {
     readonly nodeName: NodeName.FuncDef;
     readonly entity: EntityAttribute | undefined;
@@ -260,6 +324,7 @@ export interface NodeFuncDef extends NodeBase {
 }
 
 // BNF: VIRTPROP      ::= ['private' | 'protected'] TYPE ['&'] IDENTIFIER '{' {('get' | 'set') ['const'] FUNCATTR (STATBLOCK | ';')} '}'
+// TODO: REMOVE IT!
 export interface NodeVirtualProp extends NodeBase {
     readonly nodeName: NodeName.VirtualProp
     readonly accessor: AccessModifier | undefined,
@@ -277,12 +342,13 @@ export interface ParsedGetterSetter {
 }
 
 // BNF: MIXIN         ::= 'mixin' CLASS
+// TODO: REMOVE IT!
 export interface NodeMixin extends NodeBase {
     readonly nodeName: NodeName.Mixin;
     readonly mixinClass: NodeClass;
 }
 
-// BNF: INTFMTHD      ::= TYPE ['&'] IDENTIFIER PARAMLIST ['const'] FUNCATTR ';'
+// BNF: INTFMTHD      ::= TYPE IDENTIFIER PARAMLIST ['const'] ';'
 export interface NodeIntfMethod extends NodeBase {
     readonly nodeName: NodeName.IntfMethod;
     readonly returnType: NodeType;
@@ -340,26 +406,38 @@ export type NodeListValidOperators =
     | NodeListOperatorStartList;
 
 // BNF: LISTENTRY     ::= (('repeat' | 'repeat_same') (('{' LISTENTRY '}') | TYPE)) | (TYPE {',' TYPE})
+// TODO: REMOVE IT!
+
 // BNF: LISTPATTERN   ::= '{' LISTENTRY {',' LISTENTRY} '}'
+// TODO: REMOVE IT!
 export interface NodeListPattern extends NodeBase {
     readonly nodeName: NodeName.ListPattern;
     readonly operators: NodeListValidOperators[];
 }
 
-// BNF: PARAMLIST     ::= '(' ['void' | (TYPE TYPEMOD [IDENTIFIER] ['=' [EXPR | 'void']] {',' TYPE TYPEMOD [IDENTIFIER] ['...' | ('=' [EXPR | 'void'])]})] ')'
-export type NodeParamList = ParsedTypeIdentifier[];
+// BNF: PARAMLIST     ::= '(' ['void' | (PARAM {',' PARAM})] ')'
+export type NodeParamList = NodeParam[];
 
-export interface ParsedTypeIdentifier {
+// BNF: PARAM         ::= [INTERPOLATION] [PARAMMOD] TYPE [IDENTIFIER] { ARRAYDIM } [ '=' [EXPR | 'void'] ] [':' SEMANTIC]
+export interface NodeParam extends NodeBase {
+    readonly nodeName: NodeName.Param;
+    readonly interpolation: InterpolationModifier | undefined,
+    readonly modifier: ParamModifier | undefined,
     readonly type: NodeType,
-    readonly modifier: TypeModifier | undefined,
-    readonly identifier: TokenObject | undefined
-    readonly defaultExpr: NodeExpr | NodeExprVoid | undefined
-    readonly isVariadic: boolean
+    readonly identifier: TokenObject | undefined,
+    readonly arrayDim: (NodeAssign | undefined)[] | undefined,
+    readonly defaultExpr: NodeExpr | NodeExprVoid | undefined,
+    readonly semantic: TokenObject | undefined,
 }
 
-// BNF: TYPEMOD       ::= ['&' ['in' | 'out' | 'inout'] ['+'] ['if_handle_then_const']]
+// BNF: PARAMMOD      ::= 'in' | 'out' | 'inout'
+export enum ParamModifier {
+    In = 'In',
+    Out = 'Out',
+    InOut = 'InOut',
+}
 
-// BNF: TYPE          ::= ['const'] SCOPE DATATYPE ['<' TYPE {',' TYPE} '>'] { ('[' ']') | ('@' ['const']) }
+// BNF: TYPE          ::= {TYPEMOD} [MATRIXLAYOUT] SCOPE DATATYPE [TEMPLATEARGS]
 export interface NodeType extends NodeBase {
     readonly nodeName: NodeName.Type
     readonly isConst: boolean,
@@ -370,13 +448,25 @@ export interface NodeType extends NodeBase {
     readonly refModifier: ReferenceModifier | undefined,
 }
 
+// BNF: TYPEMOD       ::= 'const' | 'volatile' | 'static' | 'precise' | 'uniform'
+export enum TypeModifier {
+    Const = 'Const',
+    Volatile = 'Volatile',
+    Static = 'Static',
+    Precise = 'Precise',
+    Uniform = 'Uniform',
+}
+
 // BNF: INITLIST      ::= '{' [ASSIGN | INITLIST] {',' [ASSIGN | INITLIST]} '}'
+// TODO: REMOVE IT!
 export interface NodeInitList extends NodeBase {
     readonly nodeName: NodeName.InitList;
     readonly initList: (NodeAssign | NodeInitList)[];
 }
 
-// BNF: SCOPE         ::= ['::'] {IDENTIFIER '::'} [IDENTIFIER ['<' TYPE {',' TYPE} '>'] '::']
+// BNF: TEMPLATEARGS  ::= '<' TYPE {',' TYPE} '>'
+
+// BNF: SCOPE         ::= ['::'] {IDENTIFIER '::'} [IDENTIFIER [TEMPLATEARGS] '::']
 export interface NodeScope extends NodeBase {
     readonly nodeName: NodeName.Scope
     readonly isGlobal: boolean,
@@ -384,17 +474,58 @@ export interface NodeScope extends NodeBase {
     readonly typeTemplates: NodeType[]
 }
 
-// BNF: DATATYPE      ::= (IDENTIFIER | PRIMTYPE | '?' | 'auto')
+// BNF: DATATYPE      ::= IDENTIFIER | PRIMTYPE | '?' | 'auto'
 export interface NodeDataType extends NodeBase {
     readonly nodeName: NodeName.DataType;
     readonly identifier: TokenObject;
 }
 
-// BNF: PRIMTYPE      ::= 'void' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'float' | 'double' | 'bool'
+// BNF: RSCTYPE       ::= TYPE
+
+// BNF: ATTR          ::= '[' IDENTIFIER [ '(' [ASSIGN {',' ASSIGN}] ')' ] ']'
+export interface NodeAttr extends NodeBase {
+    readonly nodeName: NodeName.Attr;
+    readonly identifier: TokenObject;
+    readonly assignList: NodeAssign[] | undefined;
+}
+
+// BNF: INTERPOLATION ::= 'nointerpolation' | 'linear' | 'centroid' | 'noperspective' | 'sample'
+export enum InterpolationModifier {
+    NoInterpolation = 'NoInterpolation',
+    Linear = 'Linear',
+    Centroid = 'Centroid',
+    NoPerspective = 'NoPerspective',
+    Sample = 'Sample',
+}
+
+// BNF: MATRIXLAYOUT  ::= 'row_major' | 'column_major'
+export enum MatrixLayoutModifier {
+    RowMajor = 'RowMajor',
+    ColumnMajor = 'ColumnMajor'
+}
+
+// BNF: SEMANTIC      ::= IDENTIFIER
+
+// BNF: REGISTER      ::= ':' 'register' '(' IDENTIFIER [',' IDENTIFIER ')'
+export interface NodeRegister extends NodeBase {
+    readonly nodeName: NodeName.Register;
+    readonly register: TokenObject | undefined,
+    readonly space: TokenObject | undefined,
+}
+
+// BNF: PACKOFFSET    ::= ':' 'packoffset' '(' IDENTIFIER [ '.' ('x' | 'y' | 'z' | 'w') ] ')'
+export interface NodePackOffset extends NodeBase {
+    readonly nodeName: NodeName.PackOffset;
+    readonly identifier: TokenObject | undefined,
+    readonly component: TokenObject | undefined,
+}
+
+// BNF: PRIMTYPE      ::= 'void' | 'bool' | 'half' | 'float' | 'double' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'min16float' | 'min16int' | 'min16uint'
 
 // BNF: FUNCATTR      ::= {'override' | 'final' | 'explicit' | 'property' | 'delete' | 'nodiscard'}
+// TODO: REMOVE IT!
 
-// BNF: STATEMENT     ::= (IF | FOR | FOREACH | WHILE | RETURN | STATBLOCK | BREAK | CONTINUE | DOWHILE | SWITCH | EXPRSTAT | TRY)
+// BNF: STATEMENT     ::= {ATTR} (IF | FOR | WHILE | RETURN | STATBLOCK | BREAK | CONTINUE | DOWHILE | SWITCH | EXPRSTAT)
 export type NodeStatement =
     NodeIf
     | NodeFor
@@ -438,6 +569,7 @@ export interface NodeForEachVar extends NodeBase {
 }
 
 // BNF: FOREACH       ::= 'foreach' '(' TYPE IDENTIFIER {',' TYPE INDENTIFIER} ':' ASSIGN ')' STATEMENT
+// TODO: REMOVE IT!
 export interface NodeForEach extends NodeBase {
     readonly nodeName: NodeName.ForEach
     readonly variables: NodeForEachVar[],
@@ -479,6 +611,7 @@ export interface NodeExprStat extends NodeBase {
 }
 
 // BNF: TRY           ::= 'try' STATBLOCK 'catch' STATBLOCK
+// TODO: REMOVE IT!
 export interface NodeTry extends NodeBase {
     readonly nodeName: NodeName.Try;
     readonly tryBlock: NodeStatBlock,
@@ -535,7 +668,7 @@ export interface NodeExprTerm2 extends NodeBase {
     readonly postOps: NodeExprPostOp[]
 }
 
-// BNF: EXPRVALUE     ::= 'void' | CONSTRUCTCALL | FUNCCALL | VARACCESS | CAST | LITERAL | '(' ASSIGN ')' | LAMBDA
+// BNF: EXPRVALUE     ::= 'void' | CONSTRUCTCALL | FUNCCALL | VARACCESS | CAST | LITERAL | '(' ASSIGN ')'
 export type NodeExprValue =
     NodeConstructCall
     | NodeFuncCall
@@ -552,9 +685,9 @@ export interface NodeConstructCall extends NodeBase {
     readonly argList: NodeArgList;
 }
 
-// BNF: EXPRPREOP     ::= '-' | '+' | '!' | '++' | '--' | '~' | '@'
+// BNF: EXPRPREOP     ::= '-' | '+' | '!' | '++' | '--' | '~'
 
-// BNF: EXPRPOSTOP    ::= ('.' (FUNCCALL | IDENTIFIER)) | ('[' [IDENTIFIER ':'] ASSIGN {',' [IDENTIFIER ':'] ASSIGN} ']') | ARGLIST | '++' | '--'
+// BNF: EXPRPOSTOP    ::= (('.' | '->') (FUNCCALL | IDENTIFIER)) | ('[' [IDENTIFIER ':'] ASSIGN {',' [IDENTIFIER ':'] ASSIGN} ']') | ARGLIST | '++' | '--'
 export type NodeExprPostOp = NodeExprPostOp1 | NodeExprPostOp2 | NodeExprPostOp3 | NodeExprPostOp4;
 
 // ('.' (FUNCCALL | IDENTIFIER))
@@ -594,7 +727,7 @@ export interface NodeExprPostOp4 extends NodeBase {
     readonly operator: '++' | '--';
 }
 
-// BNF: CAST          ::= 'cast' '<' TYPE '>' '(' ASSIGN ')'
+// BNF: CAST          ::= '(' TYPE ')' EXPRVALUE
 export interface NodeCast extends NodeBase {
     readonly nodeName: NodeName.Cast;
     readonly type: NodeType;
@@ -602,6 +735,7 @@ export interface NodeCast extends NodeBase {
 }
 
 // BNF: LAMBDA        ::= 'function' '(' [[TYPE TYPEMOD] [IDENTIFIER] {',' [TYPE TYPEMOD] [IDENTIFIER]}] ')' STATBLOCK
+// TODO: REMOVE IT!
 export interface NodeLambda extends NodeBase {
     readonly nodeName: NodeName.Lambda;
     readonly paramList: ParsedLambdaParams[],

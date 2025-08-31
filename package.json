@@ -1,5 +1,5 @@
 {
-    "name": "angel-lsp",
+    "name": "hlsl-lsp",
     "displayName": "HLSL Language Server",
     "description": "VSCode extensions for HLSL Language Server",
     "author": "sashi0034",
@@ -7,7 +7,7 @@
     "version": "0.3.61",
     "repository": {
         "type": "git",
-        "url": "https://github.com/sashi0034/angel-lsp"
+        "url": "https://github.com/sashi0034/hlsl-lsp"
     },
     "publisher": "sashi0034",
     "categories": [
@@ -18,7 +18,7 @@
         "hlsl"
     ],
     "bugs": {
-        "url": "https://github.com/sashi0034/angel-lsp/issues"
+        "url": "https://github.com/sashi0034/hlsl-lsp/issues"
     },
     "engines": {
         "vscode": "^1.75.0"
@@ -85,7 +85,7 @@
         ],
         "commands": [
             {
-                "command": "angelScript.debug.printGlobalScope",
+                "command": "hlsl.debug.printGlobalScope",
                 "title": "HLSL: Print Global Scope in Current File"
             }
         ],
@@ -104,25 +104,31 @@
             "type": "object",
             "title": "HLSL configuration",
             "properties": {
-                "angelScript.suppressAnalyzerErrors": {
+                "hlsl.disableDiagnositcs": {
+                    "scope": "window",
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Disable all diagnostics from the language server. This is useful if you only want to use the language server for features like auto-completion and go-to-definition."
+                },
+                "hlsl.suppressAnalyzerErrors": {
                     "scope": "window",
                     "type": "boolean",
                     "default": true,
                     "description": "Report problems found in the analyzer as warnings instead of errors (true is recommended since the current analyzer is a preview version and has bugs)"
                 },
-                "angelScript.builtinStringType": {
+                "hlsl.builtinStringType": {
                     "scope": "window",
                     "type": "string",
                     "default": "string",
                     "description": "The built-in string type used in your application. Can be constructed from string literals."
                 },
-                "angelScript.builtinArrayType": {
+                "hlsl.builtinArrayType": {
                     "scope": "window",
                     "type": "string",
                     "default": "array",
                     "description": "The built-in array type used in your application. This will handle `Type[]` as `array<Type>`."
                 },
-                "angelScript.includePath": {
+                "hlsl.includePath": {
                     "scope": "window",
                     "type": "array",
                     "items": {
@@ -131,7 +137,7 @@
                     "default": [],
                     "description": "The include paths used to resolve #include. Specify as relative or absolute paths."
                 },
-                "angelScript.forceIncludePredefined": {
+                "hlsl.forceIncludePredefined": {
                     "scope": "window",
                     "type": "array",
                     "items": {
@@ -140,73 +146,73 @@
                     "default": [],
                     "description": "Paths (absolute recommended) to one or more `hlsl.predefined` files that will always be included globally, regardless of the project's configuration."
                 },
-                "angelScript.implicitMutualInclusion": {
+                "hlsl.implicitMutualInclusion": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Project files implicitly include each other (like C# or Java). This works with `hlsl.predefined` as the root."
                 },
-                "angelScript.hoistEnumParentScope": {
+                "hlsl.hoistEnumParentScope": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Hoist enum members to their parents scope for auto-completion."
                 },
-                "angelScript.explicitPropertyAccessor": {
+                "hlsl.explicitPropertyAccessor": {
                     "scope": "window",
                     "type": "boolean",
                     "default": true,
                     "description": "Controls whether the 'property' keyword is required for virtual property accessors. When set to true, functions must explicitly use the 'property' keyword to be treated as property accessors. When false, compatibility mode for HLSL prior to v2.33.1 is enabled, and functions with 'get_' or 'set_' prefixes are automatically treated as property accessors."
                 },
-                "angelScript.allowUnicodeIdentifiers": {
+                "hlsl.allowUnicodeIdentifiers": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Controls the use of international characters in the identifiers"
                 },
-                "angelScript.supportsTypedEnumerations": {
+                "hlsl.supportsTypedEnumerations": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Whether your codebase supports typed enumerations."
                 },
-                "angelScript.supportsForEach": {
+                "hlsl.supportsForEach": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Whether your codebase supports the foreach construct."
                 },
-                "angelScript.supportsDigitSeparators": {
+                "hlsl.supportsDigitSeparators": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Whether your codebase supports C++14-style digit separators."
                 },
-                "angelScript.characterLiterals": {
+                "hlsl.characterLiterals": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Whether your codebase uses the `asEP_USE_CHARACTER_LITERALS` option."
                 },
-                "angelScript.formatter.maxBlankLines": {
+                "hlsl.formatter.maxBlankLines": {
                     "scope": "window",
                     "type": "number",
                     "default": 1,
                     "description": "Controls the maximum number of blank lines between contents."
                 },
-                "angelScript.formatter.indentSpaces": {
+                "hlsl.formatter.indentSpaces": {
                     "scope": "window",
                     "type": "number",
                     "default": 4,
                     "description": "Controls the number of spaces for indentation."
                 },
-                "angelScript.formatter.useTabIndent": {
+                "hlsl.formatter.useTabIndent": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
                     "description": "Controls whether to use tabs for indentation instead of spaces."
                 },
-                "angelScript.trace.server": {
+                "hlsl.trace.server": {
                     "scope": "window",
                     "type": "string",
                     "enum": [
@@ -226,7 +232,7 @@
         ],
         "debuggers": [
             {
-                "type": "angel-lsp-dap",
+                "type": "hlsl-lsp-dap",
                 "languages": [
                     "hlsl"
                 ],
@@ -251,7 +257,7 @@
                 },
                 "initialConfigurations": [
                     {
-                        "type": "angel-lsp-dap",
+                        "type": "hlsl-lsp-dap",
                         "request": "attach",
                         "name": "Attach to HLSL DAP server",
                         "address": "localhost",
@@ -263,7 +269,7 @@
                         "label": "HLSL Debug: Attach",
                         "description": "Configuration for attaching to a DAP server",
                         "body": {
-                            "type": "angel-lsp-dap",
+                            "type": "hlsl-lsp-dap",
                             "request": "attach",
                             "name": "Attach to HLSL DAP server",
                             "address": "localhost",

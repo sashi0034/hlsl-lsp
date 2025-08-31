@@ -2,7 +2,7 @@ import {expectSuccess} from "./utils";
 
 describe('analyzer/anyCast', () => {
     expectSuccess([{
-        uri: 'file:///path/to/as.predefined',
+        uri: 'file:///path/to/hlsl.predefined',
         content: `
             void throw(?& in something) {
             }

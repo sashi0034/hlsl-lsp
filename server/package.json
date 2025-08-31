@@ -1,5 +1,5 @@
 {
-	"name": "angel-lsp",
+	"name": "hlsl-lsp",
 	"description": "HLSL Language Server for VisualStudioCode",
 	"version": "1.0.0",
 	"author": "sashi0034",

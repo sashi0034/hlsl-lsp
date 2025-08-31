@@ -4,7 +4,7 @@ import {copyGlobalSettings, resetGlobalSettings} from "../../../src/core/setting
 describe('analyzer/implicitMutualInclusion', () => {
     expectSuccess([
         {
-            uri: 'file:///path/to/as.predefined',
+            uri: 'file:///path/to/hlsl.predefined',
             content: `
                 class Vector { 
                     float x, y, z;

@@ -3,6 +3,7 @@
  * See package.json because the settings in VSCode are defined in it.
  */
 interface LanguageServerSettings {
+    disableDiagnositcs: boolean;
     suppressAnalyzerErrors: boolean;
     includePath: string[];
     forceIncludePredefined: string[];
@@ -27,6 +28,7 @@ interface LanguageServerSettings {
 }
 
 const defaultSettings: LanguageServerSettings = {
+    disableDiagnositcs: true,
     suppressAnalyzerErrors: true,
     includePath: [],
     forceIncludePredefined: [],

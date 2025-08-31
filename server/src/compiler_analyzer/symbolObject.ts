@@ -7,7 +7,7 @@ import {
     NodeInterface,
     NodeIntfMethod,
     NodeName,
-    NodeBase
+    NodeBase, NodeStruct
 } from "../compiler_parser/nodes";
 import {ResolvedType} from "./resolvedType";
 import {TokenObject} from "../compiler_tokenizer/tokenObject";
@@ -16,7 +16,7 @@ import assert = require("node:assert");
 /**
  * A node that represents a type definition.
  */
-export type TypeDefinitionNode = NodeEnum | NodeClass | NodeInterface;
+export type TypeDefinitionNode = NodeEnum | NodeStruct | NodeClass | NodeInterface;
 
 export function isNodeEnumOrClassOrInterface(type: NodeBase | undefined): type is NodeClass {
     if (type === undefined) return false;
@@ -25,7 +25,7 @@ export function isNodeEnumOrClassOrInterface(type: NodeBase | undefined): type i
 
 export function isNodeClassOrInterface(type: NodeBase | undefined): type is NodeClass {
     if (type === undefined) return false;
-    return type.nodeName === NodeName.Class || type.nodeName === NodeName.Interface;
+    return type.nodeName === NodeName.Struct || type.nodeName === NodeName.Class || type.nodeName === NodeName.Interface;
 }
 
 export enum SymbolKind {

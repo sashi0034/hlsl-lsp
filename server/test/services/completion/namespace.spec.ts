@@ -68,7 +68,7 @@ describe('completion/namespace', () => {
     );
 
     testCompletion([{
-            uri: 'file:///path/to/as.predefined',
+            uri: 'file:///path/to/hlsl.predefined',
             content: `
             namespace A {
                 namespace B {

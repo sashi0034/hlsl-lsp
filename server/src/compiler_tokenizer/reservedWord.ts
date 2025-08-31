@@ -8,6 +8,7 @@ import assert = require("assert");
 // A list of all Marks
 const reservedMarkArray = [
     '*', '**', '/', '%', '+', '-', '<=', '<', '>=', '>', '(', ')', '==', '!=', '?', ':', '=', '+=', '-=', '*=', '/=', '%=', '**=', '++', '--', '&', ',', '{', '}', ';', '|', '^', '~', '<<', '>>', '>>>', '&=', '|=', '^=', '<<=', '>>=', '>>>=', '.', '...', '&&', '||', '!', '[', ']', '^^', '@', '!is', '::',
+    '->',
     '#', // Strictly speaking, '#' is not a Mark, but is included here for use in preprocessing.
 ];
 
@@ -16,6 +17,7 @@ const reservedMarkArray = [
 // This should not include non-alphanumeric characters that are not Marks.
 const reservedAtomicMarkArray = [
     '*', '**', '/', '%', '+', '-', '<=', '<', '>', '(', ')', '==', '!=', '?', ':', '=', '+=', '-=', '*=', '/=', '%=', '**=', '++', '--', '&', ',', '{', '}', ';', '|', '^', '~', '<<', '&=', '|=', '^=', '<<=', '.', '...', '&&', '||', '!', '[', ']', '^^', '@', '::',
+    '->',
     // '>=', '>>', '>>>', '>>=', '>>>=', '!is' // These are context-dependent.
     '#', // For preprocessor
 ];
@@ -23,7 +25,8 @@ const reservedAtomicMarkArray = [
 // Alphanumeric reserved words are referred to as "Keywords" in this context.
 // A list of reserved keywords composed of alphanumeric characters.
 const reservedKeywordArray = [
-    'and', 'auto', 'bool', 'break', 'case', 'cast', 'catch', 'class', 'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'false', 'float', 'for', 'funcdef', 'if', 'import', 'in', 'inout', 'int', 'interface', 'int8', 'int16', 'int32', 'int64', 'is', 'mixin', 'namespace', 'not', 'null', 'or', 'out', 'override', 'private', 'protected', 'return', 'switch', 'true', 'try', 'typedef', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'void', 'while', 'xor', 'using'
+    'and', 'auto', 'bool', 'break', 'case', 'cast', 'catch', 'class', 'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'false', 'float', 'for', 'funcdef', 'if', 'import', 'in', 'inout', 'int', 'interface', 'int8', 'int16', 'int32', 'int64', 'is', 'mixin', 'namespace', 'not', 'null', 'or', 'out', 'override', 'private', 'protected', 'return', 'switch', 'true', 'try', 'typedef', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'void', 'while', 'xor', 'using',
+    'struct', 'min16float', 'min16int', 'min16uint'
     // Not really a reserved keyword, but is recognized by the compiler as a built-in keyword.
     // 'abstract', 'explicit', 'external', 'function', 'final', 'from', 'get', 'set', 'shared', 'super', 'this',
 ];
@@ -44,11 +47,11 @@ export const numberTypeSet = new Set<string>(['int', 'int8', 'int16', 'int32', '
 
 const primeTypeSet = new Set<string>(['void', 'int', 'int8', 'int16', 'int32', 'int64', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'float', 'double', 'bool']);
 
-const signedIntegerTypeSet = new Set<string>(['int', 'int8', 'int16', 'int32', 'int64']);
+const signedIntegerTypeSet = new Set<string>(['int', 'int8', 'int16', 'int32', 'int64', 'min16int']);
 
-const unsignedIntegerTypeSet = new Set<string>(['uint', 'uint8', 'uint16', 'uint32', 'uint64']);
+const unsignedIntegerTypeSet = new Set<string>(['uint', 'uint8', 'uint16', 'uint32', 'uint64', 'min16uint']);
 
-const floatTypeSet = new Set<string>(['float']);
+const floatTypeSet = new Set<string>(['float', 'min16float']);
 
 const doubleTypeSet = new Set<string>(['double']);
 
