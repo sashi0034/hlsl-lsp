@@ -1,5 +1,5 @@
 {
-    "name": "angel-lsp",
+    "name": "hlsl-lsp",
     "displayName": "HLSL Language Server",
     "description": "VSCode extensions for HLSL Language Server",
     "author": "sashi0034",
@@ -7,7 +7,7 @@
     "version": "0.3.61",
     "repository": {
         "type": "git",
-        "url": "https://github.com/sashi0034/angel-lsp"
+        "url": "https://github.com/sashi0034/hlsl-lsp"
     },
     "publisher": "sashi0034",
     "categories": [
@@ -18,7 +18,7 @@
         "hlsl"
     ],
     "bugs": {
-        "url": "https://github.com/sashi0034/angel-lsp/issues"
+        "url": "https://github.com/sashi0034/hlsl-lsp/issues"
     },
     "engines": {
         "vscode": "^1.75.0"
@@ -226,7 +226,7 @@
         ],
         "debuggers": [
             {
-                "type": "angel-lsp-dap",
+                "type": "hlsl-lsp-dap",
                 "languages": [
                     "hlsl"
                 ],
@@ -251,7 +251,7 @@
                 },
                 "initialConfigurations": [
                     {
-                        "type": "angel-lsp-dap",
+                        "type": "hlsl-lsp-dap",
                         "request": "attach",
                         "name": "Attach to HLSL DAP server",
                         "address": "localhost",
@@ -263,7 +263,7 @@
                         "label": "HLSL Debug: Attach",
                         "description": "Configuration for attaching to a DAP server",
                         "body": {
-                            "type": "angel-lsp-dap",
+                            "type": "hlsl-lsp-dap",
                             "request": "attach",
                             "name": "Attach to HLSL DAP server",
                             "address": "localhost",

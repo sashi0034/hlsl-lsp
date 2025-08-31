@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/angel-lsp.iml" filepath="$PROJECT_DIR$/.idea/angel-lsp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/hlsl-lsp.iml" filepath="$PROJECT_DIR$/.idea/hlsl-lsp.iml" />
     </modules>
   </component>
 </project>
