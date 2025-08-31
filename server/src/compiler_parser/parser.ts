@@ -969,6 +969,7 @@ function parseVar(parser: ParserState): NodeVar | undefined {
         }
 
         // TODO
+        parseMetadata(parser);
         parseRegister(parser);
         if (parser.next().text === ':') { // 仮実装
             parser.commit(HighlightForToken.Operator);
