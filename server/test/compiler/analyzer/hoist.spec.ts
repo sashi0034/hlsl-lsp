@@ -32,7 +32,7 @@ describe('analyzer/hoist', () => {
     `);
 
     expectSuccess([{
-        uri: 'file:///path/to/as.predefined',
+        uri: 'file:///path/to/hlsl.predefined',
         content: `
             class array<T> { }
             `

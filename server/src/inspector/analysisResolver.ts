@@ -31,7 +31,7 @@ export type InspectRequest = (uri: string, content: string) => void;
 
 export type DiagnosticsCallback = (params: PublishDiagnosticsParams) => void;
 
-const predefinedFileName = 'as.predefined';
+const predefinedFileName = 'hlsl.predefined';
 
 const profilerDescriptionLength = 12;
 
@@ -203,7 +203,7 @@ export class AnalysisResolver {
     private resolveIncludeAbsolutePaths(record: PartialInspectRecord, predefinedUri: string | undefined): string[] {
         const includeSet = new Set<string>();
 
-        // Add 'as.predefined' to the include-paths
+        // Add 'hlsl.predefined' to the include-paths
         const predefinedUriList = [
             predefinedUri,
             ...getGlobalSettings().forceIncludePredefined.map(uri => resolveIncludeUri(record.uri, uri))
@@ -228,7 +228,7 @@ export class AnalysisResolver {
         includeSet.delete(record.uri);
 
         if (getGlobalSettings().implicitMutualInclusion) {
-            // If implicit mutual inclusion is enabled, include all files under the directory where 'as.predefined' is located.
+            // If implicit mutual inclusion is enabled, include all files under the directory where 'hlsl.predefined' is located.
             if (record.uri.endsWith(predefinedFileName) === false && predefinedUri !== undefined) {
                 const predefinedDirectory = resolveUri(predefinedUri, '.');
                 return [...Array.from(includeSet),
@@ -266,7 +266,7 @@ export class AnalysisResolver {
     private findPredefinedUri(targetUri: string): string | undefined {
         const dirs = getParentDirectoryList(targetUri);
 
-        // Search for nearest 'as.predefined'
+        // Search for nearest 'hlsl.predefined'
         for (const dir of dirs) {
             const predefinedUri = dir + `/${predefinedFileName}`;
 
@@ -285,7 +285,7 @@ export class AnalysisResolver {
                 this._inspectRequest(predefinedUri, content);
             }
 
-            // Inspect all files under the directory where 'as.predefined' is located
+            // Inspect all files under the directory where 'hlsl.predefined' is located
             this.inspectUnderDirectory(resolveUri(predefinedUri, '.'));
 
             this._resolvedPredefinedFilepaths.add(predefinedUri);

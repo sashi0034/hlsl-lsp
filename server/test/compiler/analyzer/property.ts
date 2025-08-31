@@ -100,7 +100,7 @@ describe('analyzer/property', () => {
     `);
 
     expectSuccess([{
-        uri: 'file:///path/to/as.predefined',
+        uri: 'file:///path/to/hlsl.predefined',
         content: `
             interface IValue {
                 int get_value() const property;
