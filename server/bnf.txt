@@ -1,49 +1,58 @@
-SCRIPT        ::= {IMPORT | ENUM | TYPEDEF | CLASS | MIXIN | INTERFACE | FUNCDEF | VIRTPROP | VAR | FUNC | NAMESPACE | USING | ';'}
+SCRIPT        ::= {USING | NAMESPACE | ENUM | TYPEDEF | STRUCT | CLASS | INTERFACE | FUNCDEF | VAR | FUNC | CBUFFER | RESDECL | ';'}
 USING         ::= 'using' 'namespace' IDENTIFIER ('::' IDENTIFIER)* ';'
 NAMESPACE     ::= 'namespace' IDENTIFIER {'::' IDENTIFIER} '{' SCRIPT '}'
-ENUM          ::= {'shared' | 'external'} 'enum' IDENTIFIER [ ':' ('int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64') ] (';' | ('{' IDENTIFIER ['=' EXPR] {',' IDENTIFIER ['=' EXPR]} '}'))
-CLASS         ::= {'shared' | 'abstract' | 'final' | 'external'} 'class' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {VIRTPROP | FUNC | VAR | FUNCDEF} '}'))
-TYPEDEF       ::= 'typedef' PRIMTYPE IDENTIFIER ';'
-LISTENTRY     ::= (('repeat' | 'repeat_same') (('{' LISTENTRY '}') | TYPE)) | (TYPE {',' TYPE})
-LISTPATTERN   ::= '{' LISTENTRY {',' LISTENTRY} '}'
-FUNC          ::= {'shared' | 'external'} ['private' | 'protected'] [((TYPE ['&']) | '~')] IDENTIFIER PARAMLIST [LISTPATTERN] ['const'] FUNCATTR (';' | STATBLOCK)
-INTERFACE     ::= {'external' | 'shared'} 'interface' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {VIRTPROP | INTFMTHD} '}'))
-VAR           ::= ['private' | 'protected'] TYPE IDENTIFIER [( '=' (INITLIST | ASSIGN)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | ASSIGN)) | ARGLIST]} ';'
-IMPORT        ::= 'import' TYPE ['&'] IDENTIFIER PARAMLIST FUNCATTR 'from' STRING ';'
-FUNCDEF       ::= {'external' | 'shared'} 'funcdef' TYPE ['&'] IDENTIFIER PARAMLIST ';'
-VIRTPROP      ::= ['private' | 'protected'] TYPE ['&'] IDENTIFIER '{' {('get' | 'set') ['const'] FUNCATTR (STATBLOCK | ';')} '}'
-MIXIN         ::= 'mixin' CLASS
-INTFMTHD      ::= TYPE ['&'] IDENTIFIER PARAMLIST ['const'] FUNCATTR ';'
+ENUM          ::= 'enum' IDENTIFIER [ ':' ('int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64') ] (';' | ('{' IDENTIFIER ['=' EXPR] {',' IDENTIFIER ['=' EXPR]} '}' ';'))
+STRUCT        ::= 'struct' IDENTIFIER [('{' {VAR | FUNC} '}')] ';'
+CLASS         ::= 'class' IDENTIFIER [':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] (';' | ('{' {FUNC | VAR | FUNCDEF} '}' ';'))
+TYPEDEF       ::= 'typedef' TYPE IDENTIFIER ';'
+FUNC          ::= [ATTRSEQ] TYPE IDENTIFIER PARAMLIST [':' SEMANTIC] (';' | STATBLOCK)
+INTERFACE     ::= 'interface' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {INTFMTHD} '}' ';'))
+VAR           ::= [ATTRSEQ] ['groupshared'] [INTERPOLATION] TYPE IDENTIFIER { ARRAYDIM } [VARTAIL] {',' IDENTIFIER { ARRAYDIM } [VARTAIL]} ';'
+VARTAIL       ::= [INITIALIZER] [':' SEMANTIC] [REGISTER] [PACKOFFSET]
+INITIALIZER   ::= '=' (INITLIST | ASSIGN) | ARGLIST
+ARRAYDIM      ::= '[' [ASSIGN] ']'
+RESDECL       ::= [ATTRSEQ] RESOURCETYPE IDENTIFIER { ARRAYDIM } [REGISTER] ';'
+CBUFFER       ::= ('cbuffer' | 'tbuffer') IDENTIFIER [REGISTER] '{' {CBMEMBER} '}'
+CBMEMBER      ::= [MATRIXLAYOUT] [INTERPOLATION] TYPE IDENTIFIER { ARRAYDIM } [PACKOFFSET] ';'
+FUNCDEF       ::= TYPE IDENTIFIER PARAMLIST ';'
+INTFMTHD      ::= TYPE IDENTIFIER PARAMLIST ['const'] ';'
 STATBLOCK     ::= '{' {VAR | STATEMENT | USING} '}'
-PARAMLIST     ::= '(' ['void' | (TYPE TYPEMOD [IDENTIFIER] ['=' [EXPR | 'void']] {',' TYPE TYPEMOD [IDENTIFIER] ['...' | ('=' [EXPR | 'void'])]})] ')'
-TYPEMOD       ::= ['&' ['in' | 'out' | 'inout'] ['+'] ['if_handle_then_const']]
-TYPE          ::= ['const'] SCOPE DATATYPE ['<' TYPE {',' TYPE} '>'] { ('[' ']') | ('@' ['const']) }
-INITLIST      ::= '{' [ASSIGN | INITLIST] {',' [ASSIGN | INITLIST]} '}'
-SCOPE         ::= ['::'] {IDENTIFIER '::'} [IDENTIFIER ['<' TYPE {',' TYPE} '>'] '::']
-DATATYPE      ::= (IDENTIFIER | PRIMTYPE | '?' | 'auto')
-PRIMTYPE      ::= 'void' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'float' | 'double' | 'bool'
-FUNCATTR      ::= {'override' | 'final' | 'explicit' | 'property' | 'delete' | 'nodiscard'}
-STATEMENT     ::= (IF | FOR | FOREACH | WHILE | RETURN | STATBLOCK | BREAK | CONTINUE | DOWHILE | SWITCH | EXPRSTAT | TRY)
+PARAMLIST     ::= '(' ['void' | (PARAM {',' PARAM})] ')'
+PARAM         ::= [INTERPOLATION] [PARAMMOD] TYPE [IDENTIFIER] { ARRAYDIM } [ '=' [EXPR | 'void'] ] [':' SEMANTIC]
+PARAMMOD      ::= 'in' | 'out' | 'inout'
+TYPE          ::= TYPEMOD* [MATRIXLAYOUT] SCOPE DATATYPE [TEMPLATEARGS]
+TYPEMOD       ::= 'const' | 'volatile' | 'static' | 'precise' | 'uniform'
+TEMPLATEARGS  ::= '<' TYPE {',' TYPE} '>'
+SCOPE         ::= ['::'] {IDENTIFIER '::'} [IDENTIFIER [TEMPLATEARGS] '::']
+DATATYPE      ::= IDENTIFIER | PRIMTYPE | '?' | 'auto'
+PRIMTYPE      ::= 'void' | 'bool' | 'half' | 'float' | 'double' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'min16float' | 'min16int' | 'min16uint'
+RESOURCETYPE  ::= TYPE
+ATTRSEQ       ::= ATTR {ATTR}
+ATTR          ::= '[' IDENTIFIER [ '(' [ARGUMENTS] ')' ] ']'
+ARGUMENTS     ::= ASSIGN {',' ASSIGN}
+INTERPOLATION ::= 'nointerpolation' | 'linear' | 'centroid' | 'noperspective' | 'sample'
+MATRIXLAYOUT  ::= 'row_major' | 'column_major'
+SEMANTIC      ::= IDENTIFIER
+REGISTER      ::= ':' 'register' '(' IDENTIFIER [',' IDENTIFIER ')'
+PACKOFFSET    ::= ':' 'packoffset' '(' IDENTIFIER [ '.' ('x' | 'y' | 'z' | 'w') ] ')'
+STATEMENT     ::= [ATTRSEQ] (IF | FOR | WHILE | RETURN | STATBLOCK | BREAK | CONTINUE | DOWHILE | SWITCH | EXPRSTAT)
 SWITCH        ::= 'switch' '(' ASSIGN ')' '{' {CASE} '}'
 BREAK         ::= 'break' ';'
 FOR           ::= 'for' '(' (VAR | EXPRSTAT) EXPRSTAT [ASSIGN {',' ASSIGN}] ')' STATEMENT
-FOREACH       ::= 'foreach' '(' TYPE IDENTIFIER {',' TYPE INDENTIFIER} ':' ASSIGN ')' STATEMENT
 WHILE         ::= 'while' '(' ASSIGN ')' STATEMENT
 DOWHILE       ::= 'do' STATEMENT 'while' '(' ASSIGN ')' ';'
 IF            ::= 'if' '(' ASSIGN ')' STATEMENT ['else' STATEMENT]
 CONTINUE      ::= 'continue' ';'
 EXPRSTAT      ::= [ASSIGN] ';'
-TRY           ::= 'try' STATBLOCK 'catch' STATBLOCK
 RETURN        ::= 'return' [ASSIGN] ';'
 CASE          ::= (('case' EXPR) | 'default') ':' {STATEMENT}
 EXPR          ::= EXPRTERM {EXPROP EXPRTERM}
 EXPRTERM      ::= ([TYPE '='] INITLIST) | ({EXPRPREOP} EXPRVALUE {EXPRPOSTOP})
-EXPRVALUE     ::= 'void' | CONSTRUCTCALL | FUNCCALL | VARACCESS | CAST | LITERAL | '(' ASSIGN ')' | LAMBDA
+EXPRVALUE     ::= 'void' | CONSTRUCTCALL | FUNCCALL | VARACCESS | CAST | LITERAL | '(' ASSIGN ')'
 CONSTRUCTCALL ::= TYPE ARGLIST
-EXPRPREOP     ::= '-' | '+' | '!' | '++' | '--' | '~' | '@'
-EXPRPOSTOP    ::= ('.' (FUNCCALL | IDENTIFIER)) | ('[' [IDENTIFIER ':'] ASSIGN {',' [IDENTIFIER ':'] ASSIGN} ']') | ARGLIST | '++' | '--'
-CAST          ::= 'cast' '<' TYPE '>' '(' ASSIGN ')'
-LAMBDA        ::= 'function' '(' [[TYPE TYPEMOD] [IDENTIFIER] {',' [TYPE TYPEMOD] [IDENTIFIER]}] ')' STATBLOCK
+EXPRPREOP     ::= '-' | '+' | '!' | '++' | '--' | '~'
+EXPRPOSTOP    ::= (('.' | '->') (FUNCCALL | IDENTIFIER)) | ('[' [IDENTIFIER ':'] ASSIGN {',' [IDENTIFIER ':'] ASSIGN} ']') | ARGLIST | '++' | '--'
+CAST          ::= '(' TYPE ')' EXPRVALUE
 LITERAL       ::= NUMBER | STRING | BITS | 'true' | 'false' | 'null'
 FUNCCALL      ::= SCOPE IDENTIFIER ARGLIST
 VARACCESS     ::= SCOPE IDENTIFIER
@@ -51,11 +60,11 @@ ARGLIST       ::= '(' [IDENTIFIER ':'] ASSIGN {',' [IDENTIFIER ':'] ASSIGN} ')'
 ASSIGN        ::= CONDITION [ ASSIGNOP ASSIGN ]
 CONDITION     ::= EXPR ['?' ASSIGN ':' ASSIGN]
 EXPROP        ::= MATHOP | COMPOP | LOGICOP | BITOP
-BITOP         ::= '&' | '|' | '^' | '<<' | '>>' | '>>>'
-MATHOP        ::= '+' | '-' | '*' | '/' | '%' | '**'
-COMPOP        ::= '==' | '!=' | '<' | '<=' | '>' | '>=' | 'is' | '!is'
-LOGICOP       ::= '&&' | '||' | '^^' | 'and' | 'or' | 'xor'
-ASSIGNOP      ::= '=' | '+=' | '-=' | '*=' | '/=' | '|=' | '&=' | '^=' | '%=' | '**=' | '<<=' | '>>=' | '>>>='
+BITOP         ::= '&' | '|' | '^' | '<<' | '>>'
+MATHOP        ::= '+' | '-' | '*' | '/' | '%'
+COMPOP        ::= '==' | '!=' | '<' | '<=' | '>' | '>='
+LOGICOP       ::= '&&' | '||' | '^^'
+ASSIGNOP      ::= '=' | '+=' | '-=' | '*=' | '/=' | '|=' | '&=' | '^=' | '%=' | '<<=' | '>>='
 IDENTIFIER    ::= single token:  starts with letter or _, can include any letter and digit, same as in C++
 NUMBER        ::= single token:  includes integers and real numbers, same as C++
 STRING        ::= single token:  single quoted ', double quoted ", or heredoc multi-line string """
