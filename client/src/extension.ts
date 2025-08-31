@@ -103,7 +103,7 @@ function subscribeCommands(context: ExtensionContext) {
             }
         })
     );
-    context.subscriptions.push(debug.registerDebugConfigurationProvider("angel-lsp-dap", new HLSLConfigurationProvider()));
-    context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("angel-lsp-dap", new HLSLDebugAdapterServerDescriptorFactory()));
-    context.subscriptions.push(debug.registerDebugAdapterTrackerFactory("angel-lsp-dap", new HLSLDebugAdapterTrackerFactory()));
+    context.subscriptions.push(debug.registerDebugConfigurationProvider("hlsl-lsp-dap", new HLSLConfigurationProvider()));
+    context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("hlsl-lsp-dap", new HLSLDebugAdapterServerDescriptorFactory()));
+    context.subscriptions.push(debug.registerDebugAdapterTrackerFactory("hlsl-lsp-dap", new HLSLDebugAdapterTrackerFactory()));
 }
