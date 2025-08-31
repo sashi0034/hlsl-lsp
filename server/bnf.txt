@@ -1,9 +1,9 @@
-SCRIPT        ::= {USING | NAMESPACE | ENUM | TYPEDEF | STRUCT | CLASS | INTERFACE | FUNCDEF | VAR | FUNC | CBUFFER | RESDECL | ';'}
+SCRIPT        ::= {USING | NAMESPACE | ENUM | TYPEDEF | STRUCT | CLASS | INTERFACE | VAR | FUNC | CBUFFER | RESDECL | ';'}
 USING         ::= 'using' 'namespace' IDENTIFIER ('::' IDENTIFIER)* ';'
 NAMESPACE     ::= 'namespace' IDENTIFIER {'::' IDENTIFIER} '{' SCRIPT '}'
 ENUM          ::= 'enum' IDENTIFIER [ ':' ('int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64') ] (';' | ('{' IDENTIFIER ['=' EXPR] {',' IDENTIFIER ['=' EXPR]} '}' ';'))
 STRUCT        ::= 'struct' IDENTIFIER [('{' {VAR | FUNC} '}')] ';'
-CLASS         ::= 'class' IDENTIFIER [':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] (';' | ('{' {FUNC | VAR | FUNCDEF} '}' ';'))
+CLASS         ::= 'class' IDENTIFIER [':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] (';' | ('{' {FUNC | VAR} '}' ';'))
 TYPEDEF       ::= 'typedef' TYPE IDENTIFIER ';'
 FUNC          ::= [ATTRSEQ] TYPE IDENTIFIER PARAMLIST [':' SEMANTIC] (';' | STATBLOCK)
 INTERFACE     ::= 'interface' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {INTFMTHD} '}' ';'))
@@ -14,7 +14,6 @@ ARRAYDIM      ::= '[' [ASSIGN] ']'
 RESDECL       ::= [ATTRSEQ] RESOURCETYPE IDENTIFIER { ARRAYDIM } [REGISTER] ';'
 CBUFFER       ::= ('cbuffer' | 'tbuffer') IDENTIFIER [REGISTER] '{' {CBMEMBER} '}'
 CBMEMBER      ::= [MATRIXLAYOUT] [INTERPOLATION] TYPE IDENTIFIER { ARRAYDIM } [PACKOFFSET] ';'
-FUNCDEF       ::= TYPE IDENTIFIER PARAMLIST ';'
 INTFMTHD      ::= TYPE IDENTIFIER PARAMLIST ['const'] ';'
 STATBLOCK     ::= '{' {VAR | STATEMENT | USING} '}'
 PARAMLIST     ::= '(' ['void' | (PARAM {',' PARAM})] ')'
