@@ -53,7 +53,7 @@
                     ".hlsl.predefined"
                 ],
                 "filenames": [
-                    "as.predefined"
+                    "hlsl.predefined"
                 ],
                 "configuration": "./language-configuration.json",
                 "aliases": [
@@ -138,13 +138,13 @@
                         "type": "string"
                     },
                     "default": [],
-                    "description": "Paths (absolute recommended) to one or more `as.predefined` files that will always be included globally, regardless of the project's configuration."
+                    "description": "Paths (absolute recommended) to one or more `hlsl.predefined` files that will always be included globally, regardless of the project's configuration."
                 },
                 "angelScript.implicitMutualInclusion": {
                     "scope": "window",
                     "type": "boolean",
                     "default": false,
-                    "description": "Project files implicitly include each other (like C# or Java). This works with `as.predefined` as the root."
+                    "description": "Project files implicitly include each other (like C# or Java). This works with `hlsl.predefined` as the root."
                 },
                 "angelScript.hoistEnumParentScope": {
                     "scope": "window",

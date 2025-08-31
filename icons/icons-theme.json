@@ -9,9 +9,9 @@
     },
     "fileExtensions": {
         "as": "hlsl",
-        "as.predefined": "hlsl-predefined"
+        "hlsl.predefined": "hlsl-predefined"
     },
     "fileNames": {
-        "as.predefined": "hlsl-predefined"
+        "hlsl.predefined": "hlsl-predefined"
     }
 }

@@ -649,7 +649,7 @@ function parseFunc(parser: ParserState): NodeFunc | undefined {
     const typeTemplates = parseTypeTemplates(parser) ?? [];
 
     if (parser.isPredefinedFile === false) {
-        // Function declaration is not allowed outside 'as.predefined'
+        // Function declaration is not allowed outside 'hlsl.predefined'
         if (lookaheadTokenAfterParentheses(parser)?.text === ';') {
             // This node can be a variable calling a constructor, not a function declaration.
             parser.backtrack(rangeStart);

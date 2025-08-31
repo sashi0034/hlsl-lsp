@@ -3,12 +3,12 @@ using ValveKeyValue;
  * 1.Nuget install https://github.com/ValveResourceFormat/ValveKeyValue
  * 2.Run the game with the -as_outputdocs launch option to generate asdocs.txt
  * 3.Use https://github.com/cooolbros/vscode-vdf.git formatting asdocs.txt into asdocs.vdf
- * 4.Manually editing as.predefined because some of the syntax of Sven Co-op isn't that strict
+ * 4.Manually editing hlsl.predefined because some of the syntax of Sven Co-op isn't that strict
  */
 string szPath = "./asdocs.vdf";
 if (!Path.Exists(szPath))
     return;
-using FileStream fs = File.OpenWrite("./as.predefined");
+using FileStream fs = File.OpenWrite("./hlsl.predefined");
 using StreamWriter writer = new(fs);
 using var stream = File.OpenRead(szPath);
 var kv = KVSerializer.Create(KVSerializationFormat.KeyValues1Text);

@@ -111,7 +111,7 @@ s_connection.onInitialize((params: lsp.InitializeParams) => {
     if (s_hasWorkspaceFolderCapability) {
         const filters = {
             scheme: 'file',
-            pattern: {glob: '**/{as.predefined,*.hlsl}',}
+            pattern: {glob: '**/{hlsl.predefined,*.hlsl}',}
         };
 
         result.capabilities.workspace = {
