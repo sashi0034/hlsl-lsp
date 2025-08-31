@@ -48,7 +48,7 @@ export class ParserState {
     private readonly _eofToken; // end of file
 
     /**
-     * Whether the current file is 'as.predefined'
+     * Whether the current file is 'hlsl.predefined'
      */
     public readonly isPredefinedFile: boolean = false;
 
@@ -61,7 +61,7 @@ export class ParserState {
         this._sofToken = makeSofToken(_tokens.at(0));
         this._eofToken = makeEofToken(_tokens.at(-1));
 
-        this.isPredefinedFile = _tokens.at(0)?.location.path.endsWith('as.predefined') ?? false;
+        this.isPredefinedFile = _tokens.at(0)?.location.path.endsWith('hlsl.predefined') ?? false;
     }
 
     public backtrack(token: TokenObject) {
