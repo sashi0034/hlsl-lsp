@@ -133,7 +133,7 @@ s_connection.onInitialize((params: lsp.InitializeParams) => {
 });
 
 function reloadSettings() {
-    s_connection.workspace.getConfiguration('angelScript').then((config) => {
+    s_connection.workspace.getConfiguration('hlsl').then((config) => {
         resetGlobalSettings(config);
         s_inspector.reinspectAllFiles();
         if (s_hasWorkspaceDiagnosticsRefreshCapability) {
@@ -218,7 +218,7 @@ s_connection.onDidChangeTextDocument((params) => {
         moveInlayHintByChanges(inlayHints, params.contentChanges);
     }
 
-    // connection.sendRequest('angelScript/smartBackspace', 'TODO! Implement this?');
+    // connection.sendRequest('hlsl/smartBackspace', 'TODO! Implement this?');
 });
 
 s_connection.onDidCloseTextDocument(params => {
@@ -478,7 +478,7 @@ s_connection.onDocumentOnTypeFormatting((params) => {
 // -----------------------------------------------
 // Extended Features
 
-s_connection.onRequest('angelScript/printGlobalScope', params => {
+s_connection.onRequest('hlsl/printGlobalScope', params => {
     const uri = params.uri as string;
 
     const globalScope = s_inspector.getRecord(uri).analyzerScope.globalScope;

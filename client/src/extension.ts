@@ -42,14 +42,14 @@ export function activate(context: ExtensionContext) {
 
     // Create the language client and start the client.
     s_client = new LanguageClient(
-        'angelScript',
+        'hlsl',
         'HLSL Language Server',
         serverOptions,
         clientOptions
     );
 
     // Register custom command
-    s_client.onRequest("angelScript/smartBackspace", params1 => {
+    s_client.onRequest("hlsl/smartBackspace", params1 => {
         console.log(params1); // TODO: Implement this!
     });
 
@@ -92,11 +92,11 @@ class HLSLDebugAdapterTrackerFactory implements vscode.DebugAdapterTrackerFactor
 
 function subscribeCommands(context: ExtensionContext) {
     context.subscriptions.push(
-        commands.registerCommand('angelScript.debug.printGlobalScope', async () => {
+        commands.registerCommand('hlsl.debug.printGlobalScope', async () => {
             const editor = vscode.window.activeTextEditor;
             if (editor) {
                 const uri = editor.document.uri.toString();
-                const result = await s_client.sendRequest("angelScript/printGlobalScope", {uri: uri});
+                const result = await s_client.sendRequest("hlsl/printGlobalScope", {uri: uri});
                 vscode.window.showInformationMessage(`Print Global Scope: ${result}`);
             } else {
                 vscode.window.showInformationMessage('No active editor');
