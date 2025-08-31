@@ -18,7 +18,7 @@ STATBLOCK     ::= '{' {VAR | STATEMENT | USING} '}'
 PARAMLIST     ::= '(' ['void' | (PARAM {',' PARAM})] ')'
 PARAM         ::= [INTERPOLATION] [PARAMMOD] TYPE [IDENTIFIER] { ARRAYDIM } [ '=' [EXPR | 'void'] ] [':' SEMANTIC]
 PARAMMOD      ::= 'in' | 'out' | 'inout'
-TYPE          ::= TYPEMOD* [MATRIXLAYOUT] SCOPE DATATYPE [TEMPLATEARGS]
+TYPE          ::= {TYPEMOD} [MATRIXLAYOUT] SCOPE DATATYPE [TEMPLATEARGS]
 TYPEMOD       ::= 'const' | 'volatile' | 'static' | 'precise' | 'uniform'
 TEMPLATEARGS  ::= '<' TYPE {',' TYPE} '>'
 SCOPE         ::= ['::'] {IDENTIFIER '::'} [IDENTIFIER [TEMPLATEARGS] '::']

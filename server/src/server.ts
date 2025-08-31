@@ -12,7 +12,7 @@ import {provideReferences} from "./services/reference";
 import {TextEdit} from "vscode-languageserver-types/lib/esm/main";
 import {Location} from "vscode-languageserver";
 import {resetGlobalSettings} from "./core/settings";
-import {formatFile} from "./formatter/formatter";
+// import {formatFile} from "./formatter/formatter";
 import {provideSignatureHelp} from "./services/signatureHelp";
 import {TextLocation, TextPosition, TextRange} from "./compiler_tokenizer/textLocation";
 import {provideInlayHint} from "./services/inlayHint";
@@ -83,7 +83,8 @@ s_connection.onInitialize((params: lsp.InitializeParams) => {
                 resolveProvider: true,
                 triggerCharacters: [
                     '.', ':', // for autocomplete symbol
-                    '/' // for autocomplete file path
+                    '/', // for autocomplete file path
+                    '>' // for allow operator '->'
                 ]
             },
             // diagnosticProvider: {
@@ -450,11 +451,11 @@ s_connection.onSignatureHelp((params) => {
 
 // -----------------------------------------------
 // Document Formatting Provider
-s_connection.onDocumentFormatting((params) => {
-    s_inspector.flushRecord();
-    const record = s_inspector.getRecord(params.textDocument.uri);
-    return formatFile(record.content, record.rawTokens, record.ast);
-});
+// s_connection.onDocumentFormatting((params) => {
+//     s_inspector.flushRecord();
+//     const record = s_inspector.getRecord(params.textDocument.uri);
+//     return formatFile(record.content, record.rawTokens, record.ast);
+// });
 
 s_connection.onExecuteCommand((params) => {
 

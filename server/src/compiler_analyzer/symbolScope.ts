@@ -17,7 +17,7 @@ import {
     NodeInterface,
     NodeLambda,
     NodeName, NodeNamespace,
-    NodeStatBlock,
+    NodeStatBlock, NodeStruct,
     NodeTry,
     NodeUsing,
     NodeVirtualProp,
@@ -81,6 +81,7 @@ function createGlobalScopeContext(): GlobalScopeContext {
  */
 export type ScopeLinkedNode =
     NodeEnum
+    | NodeStruct
     | NodeClass
     | NodeVirtualProp
     | NodeInterface
@@ -487,13 +488,13 @@ function collectEnumScopeList(scope: SymbolScope): SymbolScope[] {
 function isSourceBuiltinString(source: TypeDefinitionNode | undefined): boolean {
     if (source === undefined) return false;
     if (source.nodeName != NodeName.Class) return false;
-    // if (source.nodeRange.path.endsWith('as.predefined') === false) return false;
+    // if (source.nodeRange.path.endsWith('hlsl.predefined') === false) return false;
 
     // Check if the class has a metadata that indicates it is a built-in string type.
     const builtinStringMetadata = "BuiltinString";
-    if (source.metadata.some(m => m.length === 1 && m[0].text === builtinStringMetadata)) {
-        return true;
-    }
+    // if (source.metadata.some(m => m.length === 1 && m[0].text === builtinStringMetadata)) {
+    //     return true;
+    // }
 
     // Check whether the class name is a built-in string type with global settings.
     return getGlobalSettings().builtinStringType === source.identifier.text;
@@ -564,7 +565,12 @@ export function getActiveGlobalScope(): SymbolGlobalScope {
 /** @internal */
 export function resolveActiveScope(path: ScopePath): SymbolScope {
     const result = getActiveGlobalScope().resolveScope(path);
-    assert(result !== undefined);
+
+    // assert(result !== undefined); // TODO: 調査
+    if (result === undefined) {
+        return getActiveGlobalScope();
+    }
+
     return result;
 }
 

@@ -245,12 +245,12 @@ function evaluateFunctionMatch(
     let totalCost = 0;
 
     // Caller arguments must be at least as many as the callee parameters.
-    if (callee.parameterTypes.length < callerArgs.length) {
-        if (!callee.linkedNode.paramList.at(-1)?.isVariadic) {
-            // The number of arguments is too many.
-            return {reason: MismatchKind.TooManyArguments};
-        }
-    }
+    // if (callee.parameterTypes.length < callerArgs.length) {
+    //     if (!callee.linkedNode.paramList.at(-1)?.isVariadic) {
+    //         // The number of arguments is too many.
+    //         return {reason: MismatchKind.TooManyArguments};
+    //     }
+    // }
 
     // The order of the caller arguments is expected to be as follows:
     // ('positional', 'positional', ... 'positional', 'named', 'named', ... 'named')
@@ -363,19 +363,19 @@ function evaluatePassingPositionalArgument(
         totalCost += cost;
     }
 
-    if (callee.linkedNode.paramList.at(-1)?.isVariadic) {
-        // Check the rest of the caller's variadic arguments.
-        // e.g. 'arg1', 'arg2' in 'format(fmt, arg0, arg1, arg2)' (arg0 has already been checked above);
-        for (let paramId = callee.parameterTypes.length; paramId < callerArgs.length; paramId++) {
-            const cost =
-                evaluatePassingArgument(args, paramId, callee.parameterTypes.at(-1), sideEffectBuffer);
-            if (hasMismatchReason(cost)) {
-                return cost;
-            }
+    // if (callee.linkedNode.paramList.at(-1)?.isVariadic) {
+    //     // Check the rest of the caller's variadic arguments.
+    //     // e.g. 'arg1', 'arg2' in 'format(fmt, arg0, arg1, arg2)' (arg0 has already been checked above);
+    //     for (let paramId = callee.parameterTypes.length; paramId < callerArgs.length; paramId++) {
+    //         const cost =
+    //             evaluatePassingArgument(args, paramId, callee.parameterTypes.at(-1), sideEffectBuffer);
+    //         if (hasMismatchReason(cost)) {
+    //             return cost;
+    //         }
 
-            totalCost += cost;
-        }
-    }
+    //         totalCost += cost;
+    //     }
+    // }
 
     return totalCost;
 }
