@@ -51,10 +51,10 @@ export function resolveIncludeUri(baseUri: string, relativeOrAbsolute: string): 
         return normalizeFileUri(url.pathToFileURL(relativeOrAbsolute).toString());
     }
 
-    if (!relativeOrAbsolute.endsWith('.hlsl') && !relativeOrAbsolute.endsWith('.predefined')) {
-        // If the file does not have an extension, assume it is an ActionScript file.
-        relativeOrAbsolute = relativeOrAbsolute + '.hlsl';
-    }
+    // if (!relativeOrAbsolute.endsWith('.hlsl') && !relativeOrAbsolute.endsWith('.predefined')) {
+    //     // If the file does not have an extension, assume it is an ActionScript file.
+    //     relativeOrAbsolute = relativeOrAbsolute + '.hlsl';
+    // }
 
     const primaryUri = resolveUri(baseUri, relativeOrAbsolute);
     if (isFileUri(primaryUri)) {
