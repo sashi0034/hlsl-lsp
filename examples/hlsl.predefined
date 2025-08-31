@@ -1,0 +1,186 @@
+//=========================================================
+// Vector types
+//=========================================================
+struct bool2  { };
+struct bool3  { };
+struct bool4  { };
+struct int2   { };
+struct int3   { };
+struct int4   { };
+struct uint2  { };
+struct uint3  { };
+struct uint4  { };
+struct half2  { };
+struct half3  { };
+struct half4  { };
+struct float2 { };
+struct float3 { };
+struct float4 { };
+struct double2 { };
+struct double3 { };
+struct double4 { };
+
+//=========================================================
+// Matrix types
+//=========================================================
+struct float2x2 { };
+struct float2x3 { };
+struct float2x4 { };
+struct float3x2 { };
+struct float3x3 { };
+struct float3x4 { };
+struct float4x2 { };
+struct float4x3 { };
+struct float4x4 { };
+
+struct double2x2 { };
+struct double3x3 { };
+struct double4x4 { };
+
+//=========================================================
+// Resource objects
+//=========================================================
+class SamplerState { };
+class SamplerComparisonState { };
+
+class Texture1D
+{
+    auto Sample(SamplerState s, auto loc);
+    auto SampleLevel(SamplerState s, auto loc, auto lod);
+    auto Load(auto loc);
+};
+class Texture1DArray
+{
+    auto Sample(SamplerState s, auto loc);
+    auto SampleLevel(SamplerState s, auto loc, auto lod);
+    auto Load(auto loc);
+};
+class Texture2D
+{
+    auto Sample(SamplerState s, auto loc);
+    auto SampleLevel(SamplerState s, auto loc, auto lod);
+    auto SampleGrad(SamplerState s, auto loc, auto ddx, auto ddy);
+    auto Load(auto loc);
+};
+class Texture2DArray
+{
+    auto Sample(SamplerState s, auto loc);
+    auto SampleLevel(SamplerState s, auto loc, auto lod);
+    auto SampleGrad(SamplerState s, auto loc, auto ddx, auto ddy);
+    auto Load(auto loc);
+};
+class Texture3D
+{
+    auto Sample(SamplerState s, auto loc);
+    auto SampleLevel(SamplerState s, auto loc, auto lod);
+    auto Load(auto loc);
+};
+class TextureCube
+{
+    auto Sample(SamplerState s, auto dir);
+    auto SampleLevel(SamplerState s, auto dir, auto lod);
+};
+class TextureCubeArray
+{
+    auto Sample(SamplerState s, auto dir);
+    auto SampleLevel(SamplerState s, auto dir, auto lod);
+};
+
+class RWTexture1D { auto Load(auto loc); auto Store(auto loc, auto v); };
+class RWTexture2D { auto Load(auto loc); auto Store(auto loc, auto v); };
+class RWTexture3D { auto Load(auto loc); auto Store(auto loc, auto v); };
+
+class StructuredBuffer<T> { auto Load(auto i); };
+class RWStructuredBuffer<T> { auto Load(auto i); auto Store(auto i, auto v); };
+
+class AppendStructuredBuffer<T> { auto Append(auto v); };
+class ConsumeStructuredBuffer<T> { auto Consume(out auto v); };
+
+class ByteAddressBuffer { auto Load(auto i); };
+class RWByteAddressBuffer { auto Load(auto i); auto Store(auto i, auto v); };
+
+class Texture2DMS
+{
+    auto Load(auto loc, auto sampleIndex);
+};
+class Texture2DMSArray
+{
+    auto Load(auto loc, auto sampleIndex);
+};
+
+//=========================================================
+// Intrinsic functions (overloads unified with auto)
+//=========================================================
+auto abs(auto v);
+auto acos(auto v);
+auto all(auto v);
+auto any(auto v);
+auto asin(auto v);
+auto atan(auto v);
+auto atan2(auto y, auto x);
+auto ceil(auto v);
+auto clamp(auto v, auto min, auto max);
+auto cos(auto v);
+auto cosh(auto v);
+auto cross(auto a, auto b);
+auto ddx(auto v);
+auto ddy(auto v);
+auto degrees(auto v);
+auto determinant(auto m);
+auto distance(auto a, auto b);
+auto dot(auto a, auto b);
+auto exp(auto v);
+auto exp2(auto v);
+auto faceforward(auto n, auto i, auto ng);
+auto floor(auto v);
+auto fmod(auto a, auto b);
+auto frac(auto v);
+auto frexp(auto x, out auto exp);
+auto isfinite(auto v);
+auto isinf(auto v);
+auto isnan(auto v);
+auto ldexp(auto x, auto exp);
+auto length(auto v);
+auto lerp(auto a, auto b, auto s);
+auto lit(auto n_dot_l, auto n_dot_h, auto m);
+auto log(auto v);
+auto log2(auto v);
+auto log10(auto v);
+auto mad(auto a, auto b, auto c);
+auto max(auto a, auto b);
+auto min(auto a, auto b);
+auto modf(auto x, out auto ip);
+auto mul(auto a, auto b);
+auto normalize(auto v);
+auto pow(auto a, auto b);
+auto radians(auto v);
+auto reflect(auto i, auto n);
+auto refract(auto i, auto n, auto eta);
+auto round(auto v);
+auto rsqrt(auto v);
+auto saturate(auto v);
+auto sign(auto v);
+auto sin(auto v);
+auto sinh(auto v);
+auto smoothstep(auto min, auto max, auto x);
+auto sqrt(auto v);
+auto step(auto edge, auto x);
+auto tan(auto v);
+auto tanh(auto v);
+auto transpose(auto m);
+auto trunc(auto v);
+
+auto fwidth(auto v);
+auto ddx_fine(auto v);
+auto ddy_fine(auto v);
+auto ddx_coarse(auto v);
+auto ddy_coarse(auto v);
+
+auto WaveActiveSum(auto v);
+auto WaveActiveProduct(auto v);
+auto WaveActiveMin(auto v);
+auto WaveActiveMax(auto v);
+auto WaveActiveAllTrue(auto v);
+auto WaveActiveAnyTrue(auto v);
+auto WaveReadLaneAt(auto v, auto lane);
+auto WaveReadFirstLane(auto v);
