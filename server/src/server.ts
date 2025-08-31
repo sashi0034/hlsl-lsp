@@ -11,13 +11,13 @@ import {provideSemanticTokens} from "./services/semanticTokens";
 import {provideReferences} from "./services/reference";
 import {TextEdit} from "vscode-languageserver-types/lib/esm/main";
 import {Location} from "vscode-languageserver";
-import {resetGlobalSettings} from "./core/settings";
+import {getGlobalSettings, resetGlobalSettings} from "./core/settings";
 // import {formatFile} from "./formatter/formatter";
 import {provideSignatureHelp} from "./services/signatureHelp";
 import {TextLocation, TextPosition, TextRange} from "./compiler_tokenizer/textLocation";
 import {provideInlayHint} from "./services/inlayHint";
 import {DiagnosticSeverity} from "vscode-languageserver-types";
-import {CodeAction} from "vscode-languageserver-protocol";
+import {CodeAction, PublishDiagnosticsParams} from "vscode-languageserver-protocol";
 import {provideCodeAction} from "./services/codeAction";
 import {provideCompletionOfToken} from "./services/completionExtension";
 import {provideCompletionResolve} from "./services/completionResolve";
@@ -496,4 +496,8 @@ s_connection.onRequest('hlsl/printGlobalScope', params => {
 // Listen on the connection
 s_connection.listen();
 
-s_inspector.registerDiagnosticsCallback(s_connection.sendDiagnostics);
+s_inspector.registerDiagnosticsCallback((params: PublishDiagnosticsParams) => {
+    if (getGlobalSettings().disableDiagnositcs === false) {
+        s_connection.sendDiagnostics(params);
+    }
+});

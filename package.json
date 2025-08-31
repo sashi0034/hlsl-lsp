@@ -104,6 +104,12 @@
             "type": "object",
             "title": "HLSL configuration",
             "properties": {
+                "hlsl.disableDiagnositcs": {
+                    "scope": "window",
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Disable all diagnostics from the language server. This is useful if you only want to use the language server for features like auto-completion and go-to-definition."
+                },
                 "hlsl.suppressAnalyzerErrors": {
                     "scope": "window",
                     "type": "boolean",
