@@ -26,7 +26,7 @@ function testFormatter(content: string, expectedContent: string) {
     it(`format ${content}`, () => {
         const inspector = new Inspector();
 
-        const uri = "/foo/bar.as";
+        const uri = "/foo/bar.hlsl";
         inspector.inspectFile(uri, content);
 
         inspector.flushRecord();

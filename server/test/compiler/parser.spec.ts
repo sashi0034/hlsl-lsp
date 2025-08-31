@@ -7,7 +7,7 @@ function testParser(content: string, expectSuccess: boolean) {
     it(`parses: ${content}`, () => {
         diagnostic.beginSession();
 
-        const uri = "/foo/bar.as";
+        const uri = "/foo/bar.hlsl";
         const rawTokens = tokenize(uri, content);
         const preprocessedTokens = preprocessAfterTokenized(rawTokens);
         parseAfterPreprocessed(preprocessedTokens.preprocessedTokens);

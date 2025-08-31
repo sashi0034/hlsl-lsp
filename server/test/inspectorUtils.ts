@@ -25,7 +25,7 @@ export function isRawContent(fileContent: FileContents): fileContent is string {
     return typeof fileContent === "string";
 }
 
-const defaultTargetUri = 'file:///path/to/file.as';
+const defaultTargetUri = 'file:///path/to/file.hlsl';
 
 export function makeFileContentList(fileContents: FileContents): FileContentUnit[] {
     if (isRawContent(fileContents)) {

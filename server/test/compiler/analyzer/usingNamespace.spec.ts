@@ -46,24 +46,24 @@ describe('analyzer/usingNamespace', () => {
     `);
 
     expectSuccess([{
-        uri: 'file:///path/to/file_1.as',
+        uri: 'file:///path/to/file_1.hlsl',
         content: `
             namespace A {
                 using namespace B;
             }`
     }, {
-        uri: 'file:///path/to/file_2.as',
+        uri: 'file:///path/to/file_2.hlsl',
         content: `// This is an error because the other file is not included.
-            #include "file_1.as"
+            #include "file_1.hlsl"
             
             namespace A::B {
                 void fn_a_b();
             }
             `
     }, {
-        uri: 'file:///path/to/file_3.as',
+        uri: 'file:///path/to/file_3.hlsl',
         content: `// Include 'using namespace' from another file.
-            #include "file_2.as"
+            #include "file_2.hlsl"
             namespace A {
                 void a() {
                     fn_a_b();

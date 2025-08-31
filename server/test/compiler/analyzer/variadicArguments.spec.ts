@@ -10,7 +10,7 @@ describe('analyzer/variadicArguments', () => {
             `
         },
         {
-            uri: 'file:///path/to/file.as',
+            uri: 'file:///path/to/file.hlsl',
             content: `// Variadic arguments are supported.
                 void main() {
                     Str str;
@@ -31,7 +31,7 @@ describe('analyzer/variadicArguments', () => {
             `
         },
         {
-            uri: 'file:///path/to/file.as',
+            uri: 'file:///path/to/file.hlsl',
             content: `// Variadic arguments need at least one argument.
                 void main() {
                     Str str;
@@ -50,7 +50,7 @@ describe('analyzer/variadicArguments', () => {
             `
         },
         {
-            uri: 'file:///path/to/file.as',
+            uri: 'file:///path/to/file.hlsl',
             content: `// Variadic arguments need at least one argument.
                 void main() {
                     Str str;
@@ -69,7 +69,7 @@ describe('analyzer/variadicArguments', () => {
             `
         },
         {
-            uri: 'file:///path/to/file.as',
+            uri: 'file:///path/to/file.hlsl',
             content: `// Type mismatch in variadic arguments.
                 void main() {
                     Str str;

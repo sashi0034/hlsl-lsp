@@ -2,16 +2,16 @@ import {testDefinition} from "./utils";
 
 describe('definition/multipleNamespaces', () => {
     testDefinition([{
-        uri: 'file:///path/to/file_0.as',
+        uri: 'file:///path/to/file_0.hlsl',
         content: `
             namespace A$C0$ {
                 void fn_0() { }
             }
         `
     }, {
-        uri: 'file:///path/to/file_1.as',
+        uri: 'file:///path/to/file_1.hlsl',
         content: `// Jump to the most appropriate namespace
-            #include "file_0.as"
+            #include "file_0.hlsl"
             namespace A {
                 void fn_1() { }
             }
@@ -23,16 +23,16 @@ describe('definition/multipleNamespaces', () => {
     }]);
 
     testDefinition([{
-        uri: 'file:///path/to/file_0.as',
+        uri: 'file:///path/to/file_0.hlsl',
         content: `// Jump to the most appropriate namespace
             namespace A {
                 void fn_0() { }
             }
         `
     }, {
-        uri: 'file:///path/to/file_1.as',
+        uri: 'file:///path/to/file_1.hlsl',
         content: `
-            #include "file_0.as"
+            #include "file_0.hlsl"
             namespace A$C0$ {
                 void fn_1() { }
             }

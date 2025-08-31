@@ -78,7 +78,7 @@ describe('completion/namespace', () => {
                 namespace C_0 { void a(); }
             }`
         }, {
-            uri: 'file:///path/to/file_1.as',
+            uri: 'file:///path/to/file_1.hlsl',
             content: `
             namespace A {
                 namespace B {
@@ -89,9 +89,9 @@ describe('completion/namespace', () => {
             }
         `
         }, {
-            uri: 'file:///path/to/file_2.as',
+            uri: 'file:///path/to/file_2.hlsl',
             content: `// Compression of other files is also possible
-            #include "file_1.as"
+            #include "file_1.hlsl"
             
             void main() {
                 A::$C0$;

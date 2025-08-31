@@ -27,7 +27,7 @@
     "activationEvents": [
         "onLanguage:hlsl",
         "onLanguage:hlsl-predefined",
-        "workspaceContains:**/*.as",
+        "workspaceContains:**/*.hlsl",
         "onDebug"
     ],
     "main": "./client/out/extension",
@@ -36,7 +36,7 @@
             {
                 "id": "hlsl",
                 "extensions": [
-                    ".as"
+                    ".hlsl"
                 ],
                 "configuration": "./language-configuration.json",
                 "aliases": [
@@ -50,7 +50,7 @@
             {
                 "id": "hlsl-predefined",
                 "extensions": [
-                    ".as.predefined"
+                    ".hlsl.predefined"
                 ],
                 "filenames": [
                     "as.predefined"

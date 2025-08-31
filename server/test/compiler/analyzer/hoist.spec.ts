@@ -37,7 +37,7 @@ describe('analyzer/hoist', () => {
             class array<T> { }
             `
     }, {
-        uri: 'file:///path/to/file.as',
+        uri: 'file:///path/to/file.hlsl',
         content: `// Hoisting of global variable types
             array<Str> strs;
 

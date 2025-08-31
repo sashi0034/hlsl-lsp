@@ -7,8 +7,8 @@ import {getGlobalSettings} from "../core/settings";
 /**
  * Resolves a relative file path against a base file URI and returns the resulting URI as a string.
  *
- * @param baseUri - The base file or directory URI as a string (e.g., "file:///path/to/file.as").
- * @param relativePath - A relative path from the base URI (e.g., "src/index.as").
+ * @param baseUri - The base file or directory URI as a string (e.g., "file:///path/to/file.hlsl").
+ * @param relativePath - A relative path from the base URI (e.g., "src/index.hlsl").
  * @returns The resolved file URI as a string, or an empty string if resolution fails.
  */
 export function resolveUri(baseUri: string, relativePath: string): string {
@@ -51,9 +51,9 @@ export function resolveIncludeUri(baseUri: string, relativeOrAbsolute: string): 
         return normalizeFileUri(url.pathToFileURL(relativeOrAbsolute).toString());
     }
 
-    if (!relativeOrAbsolute.endsWith('.as') && !relativeOrAbsolute.endsWith('.predefined')) {
+    if (!relativeOrAbsolute.endsWith('.hlsl') && !relativeOrAbsolute.endsWith('.predefined')) {
         // If the file does not have an extension, assume it is an ActionScript file.
-        relativeOrAbsolute = relativeOrAbsolute + '.as';
+        relativeOrAbsolute = relativeOrAbsolute + '.hlsl';
     }
 
     const primaryUri = resolveUri(baseUri, relativeOrAbsolute);

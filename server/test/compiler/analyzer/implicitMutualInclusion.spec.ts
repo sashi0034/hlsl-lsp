@@ -11,13 +11,13 @@ describe('analyzer/implicitMutualInclusion', () => {
                 }`
         },
         {
-            uri: 'file:///path/to/file_1.as',
+            uri: 'file:///path/to/file_1.hlsl',
             content: `
                 class File1 { 
                     File2 file2;
                 }`
         }, {
-            uri: 'file:///path/to/file_2.as',
+            uri: 'file:///path/to/file_2.hlsl',
             content: `// Circular include is allowed.
                 class File2 : File1 {
                     Vector vector;

@@ -8,7 +8,7 @@ describe('analyzer/anyCast', () => {
             }
             `
     }, {
-        uri: 'file:///path/to/file.as',
+        uri: 'file:///path/to/file.hlsl',
         content: `// '?' is a type that can be used to throw any value.
             int fn() { return 1; }
         

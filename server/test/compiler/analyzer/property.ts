@@ -106,7 +106,7 @@ describe('analyzer/property', () => {
                 int get_value() const property;
             }`
     }, {
-        uri: 'file:///path/to/file.as',
+        uri: 'file:///path/to/file.hlsl',
         content: `// Interface properties are available.
             class Value : IValue {
                 private int m_value;

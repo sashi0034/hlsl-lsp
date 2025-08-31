@@ -12,7 +12,7 @@ describe('analyzer/foreachStatement', () => {
                 uint opForValue1(uint index) const;
             }`
     }, {
-        uri: 'file:///path/to/file.as',
+        uri: 'file:///path/to/file.hlsl',
         content: `// foreach statement is available.
             int iterate(array<bool> arr) {
                 int sum;
@@ -39,7 +39,7 @@ describe('analyzer/foreachStatement', () => {
                 uint opForValue1(uint index) const;
             }`
     }, {
-        uri: 'file:///path/to/file.as',
+        uri: 'file:///path/to/file.hlsl',
         content: `// Cannot use foreach statement with too many variables.
             int iterate(array<bool> arr) {
                 int sum;
