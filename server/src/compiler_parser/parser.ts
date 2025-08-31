@@ -1435,10 +1435,10 @@ function parseParamMod(parser: ParserState): ParamModifier | undefined {
     if (next === 'in') {
         result = ParamModifier.In;
     }
-    if (next === 'out') {
+    else if (next === 'out') {
         result = ParamModifier.Out;
     }
-    if (next === 'inout') {
+    else if (next === 'inout') {
         result = ParamModifier.InOut;
     } else {
         result = undefined;
