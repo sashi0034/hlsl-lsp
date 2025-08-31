@@ -8,8 +8,7 @@ TYPEDEF       ::= 'typedef' TYPE IDENTIFIER ';'
 FUNC          ::= [ATTRSEQ] TYPE IDENTIFIER PARAMLIST [':' SEMANTIC] (';' | STATBLOCK)
 INTERFACE     ::= 'interface' IDENTIFIER (';' | ([':' SCOPE IDENTIFIER {',' SCOPE IDENTIFIER}] '{' {INTFMTHD} '}' ';'))
 VAR           ::= [ATTRSEQ] ['groupshared'] [INTERPOLATION] TYPE IDENTIFIER { ARRAYDIM } [VARTAIL] {',' IDENTIFIER { ARRAYDIM } [VARTAIL]} ';'
-VARTAIL       ::= [INITIALIZER] [':' SEMANTIC] [REGISTER] [PACKOFFSET]
-INITIALIZER   ::= '=' (INITLIST | ASSIGN) | ARGLIST
+VARTAIL       ::= ['=' (INITLIST | ASSIGN) | ARGLIST] [':' SEMANTIC] [REGISTER] [PACKOFFSET]
 ARRAYDIM      ::= '[' [ASSIGN] ']'
 RESDECL       ::= [ATTRSEQ] RESOURCETYPE IDENTIFIER { ARRAYDIM } [REGISTER] ';'
 CBUFFER       ::= ('cbuffer' | 'tbuffer') IDENTIFIER [REGISTER] '{' {CBMEMBER} '}'
@@ -27,8 +26,7 @@ DATATYPE      ::= IDENTIFIER | PRIMTYPE | '?' | 'auto'
 PRIMTYPE      ::= 'void' | 'bool' | 'half' | 'float' | 'double' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'min16float' | 'min16int' | 'min16uint'
 RESOURCETYPE  ::= TYPE
 ATTRSEQ       ::= ATTR {ATTR}
-ATTR          ::= '[' IDENTIFIER [ '(' [ARGUMENTS] ')' ] ']'
-ARGUMENTS     ::= ASSIGN {',' ASSIGN}
+ATTR          ::= '[' IDENTIFIER [ '(' [ASSIGN {',' ASSIGN}] ')' ] ']'
 INTERPOLATION ::= 'nointerpolation' | 'linear' | 'centroid' | 'noperspective' | 'sample'
 MATRIXLAYOUT  ::= 'row_major' | 'column_major'
 SEMANTIC      ::= IDENTIFIER
