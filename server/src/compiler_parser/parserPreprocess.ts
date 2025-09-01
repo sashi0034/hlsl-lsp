@@ -3,12 +3,26 @@ import {diagnostic} from "../core/diagnostic";
 import {HighlightForToken} from "../core/highlight";
 import {TokenRange} from "../compiler_tokenizer/tokenRange";
 
+export interface DefineMacroDirective {
+    readonly identifier: TokenObject;
+    readonly macroTokens: TokenObject[];
+}
+
 /**
  * Output of the 'preprocessAfterTokenized' function.
  */
 export interface PreprocessedOutput {
     readonly preprocessedTokens: TokenObject[];
     readonly includePathTokens: TokenString[];
+    readonly defineMacros: DefineMacroDirective[];
+}
+
+export function emptyPreprocessedOutput(): PreprocessedOutput {
+    return {
+        preprocessedTokens: [],
+        includePathTokens: [],
+        defineMacros: []
+    };
 }
 
 /**
@@ -21,7 +35,7 @@ export function preprocessAfterTokenized(tokens: TokenObject[]): PreprocessedOut
     const actualTokens: TokenObject[] = tokens.filter(t => t.kind !== TokenKind.Comment);
 
     // Handle preprocessor directives
-    const includeFiles = preprocessDirectives(actualTokens);
+    const { includeFiles, defineMacros } = preprocessDirectives(actualTokens);
 
     // Concatenate continuous strings.
     for (let i = actualTokens.length - 1; i >= 1; i--) {
@@ -42,12 +56,14 @@ export function preprocessAfterTokenized(tokens: TokenObject[]): PreprocessedOut
 
     return {
         preprocessedTokens: actualTokens,
-        includePathTokens: includeFiles
+        includePathTokens: includeFiles,
+        defineMacros
     };
 }
 
-function preprocessDirectives(tokens: TokenObject[]): TokenString[] {
+function preprocessDirectives(tokens: TokenObject[]): { includeFiles: TokenString[]; defineMacros: DefineMacroDirective[] } {
     const includeFiles: TokenString[] = [];
+    const defineMacros: DefineMacroDirective[] = [];
     const directiveRanges: [number, number][] = [];
 
     // Handle preprocessor directives starting with '#'
@@ -55,7 +71,7 @@ function preprocessDirectives(tokens: TokenObject[]): TokenString[] {
         if (tokens[i].text !== '#') continue;
         const directiveTokens = sliceTokenListBySameLine(tokens, i);
 
-        handleDirectiveTokens(directiveTokens, includeFiles);
+        handleDirectiveTokens(directiveTokens, includeFiles, defineMacros);
         directiveRanges.push([i, directiveTokens.length]);
     }
 
@@ -64,13 +80,18 @@ function preprocessDirectives(tokens: TokenObject[]): TokenString[] {
         tokens.splice(directiveRanges[i][0], directiveRanges[i][1]);
     }
 
-    return includeFiles;
+    return { includeFiles, defineMacros };
 }
 
-function handleDirectiveTokens(directiveTokens: TokenObject[], includeFiles: TokenString[]) {
+function handleDirectiveTokens(
+    directiveTokens: TokenObject[],
+    includeFiles: TokenString[],
+    defineMacros: DefineMacroDirective[]
+) {
     directiveTokens[0].setHighlight(HighlightForToken.Directive);
 
-    if (directiveTokens[1]?.text === 'include') {
+    const keyword = directiveTokens[1]?.text;
+    if (keyword === 'include') {
         directiveTokens[1].setHighlight(HighlightForToken.Directive);
 
         // Check the include directive.
@@ -85,9 +106,32 @@ function handleDirectiveTokens(directiveTokens: TokenObject[], includeFiles: Tok
             return;
         }
 
-        includeFiles.push(fileName);
-    } else {
-        if (directiveTokens[1] != null) directiveTokens[1].setHighlight(HighlightForToken.Label);
+        includeFiles.push(fileName as TokenString);
+    }
+    else if (keyword === 'define') {
+        directiveTokens[1].setHighlight(HighlightForToken.Directive);
+
+        const identifier = directiveTokens[2];
+        if (identifier === null) {
+            diagnostic.error(directiveTokens[1].location, 'Expected identifier after #define.');
+            return;
+        }
+
+        if (identifier.kind !== TokenKind.Identifier) {
+            diagnostic.error(identifier.location, 'Expected identifier after #define.');
+            return;
+        }
+
+        identifier.setHighlight(HighlightForToken.Variable);
+
+        const macroTokens = directiveTokens.slice(3); // 残りをそのまま格納（引数付きマクロ未対応）
+        defineMacros.push({
+            identifier: identifier,
+            macroTokens
+        });
+    }
+    else if (directiveTokens[1] != null) {
+        directiveTokens[1].setHighlight(HighlightForToken.Label);
     }
 }
 

@@ -15,6 +15,7 @@ import {fileURLToPath} from "node:url";
 import * as fs from "fs";
 import {AnalyzerScope, createGlobalScope} from "../compiler_analyzer/analyzerScope";
 import {AnalysisQueue, AnalysisQueuePriority} from "./analysisQueue";
+import { SymbolVariable } from '../compiler_analyzer/symbolObject';
 
 interface PartialInspectRecord {
     readonly uri: string;
@@ -153,8 +154,23 @@ export class AnalysisResolver {
 
         const profiler = new Profiler();
 
+        const newScope = createGlobalScope(record.uri, includeScopes);
+
+        // FIXME: これはマクロの仮対応です
+        for (let i = 0; i < record.preprocessedOutput.defineMacros.length; i++) {
+            const macro = record.preprocessedOutput.defineMacros[i];
+            newScope.insertSymbol(
+                SymbolVariable.create({
+                    identifierToken: macro.identifier,
+                    scopePath: [],
+                    type: undefined,
+                    isInstanceMember: false,
+                    accessRestriction: undefined
+                }));
+        }
+
         // Execute the hoist
-        const hoistResult = hoistAfterParsed(record.ast, createGlobalScope(record.uri, includeScopes));
+        const hoistResult = hoistAfterParsed(record.ast, newScope);
         profiler.mark('Hoist'.padEnd(profilerDescriptionLength));
 
         // Execute the analyzer
