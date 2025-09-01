@@ -1456,7 +1456,7 @@ function parseParamMod(parser: ParserState): ParamModifier | undefined {
 function parseType(parser: ParserState): NodeType | undefined {
     const rangeStart = parser.next();
 
-    const isConst = parseConst(parser);
+    const typeModList = parseTypeModList(parser);
 
     const scope = parseScope(parser);
 
@@ -1477,7 +1477,7 @@ function parseType(parser: ParserState): NodeType | undefined {
     return {
         nodeName: NodeName.Type,
         nodeRange: new TokenRange(rangeStart, parser.prev()),
-        isConst: isConst,
+        typeModList: typeModList,
         scope: scope,
         dataType: datatype,
         typeTemplates: typeTemplates,

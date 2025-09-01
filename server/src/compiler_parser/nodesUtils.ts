@@ -6,7 +6,8 @@ export function isEntityModifierForClass(modifier: EntityAttribute) {
 }
 
 export function stringifyNodeType(type: NodeType): string {
-    let str = type.isConst ? 'const ' : '';
+    // let str = type.isConst ? 'const ' : '';
+    let str = ''; // TODO
     str += type.dataType.identifier.text;
     if (type.typeTemplates.length > 0) {
         str += '<' + type.typeTemplates.map(stringifyNodeType).join(', ') + '>';

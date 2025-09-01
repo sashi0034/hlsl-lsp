@@ -440,7 +440,7 @@ export enum ParamModifier {
 // BNF: TYPE          ::= {TYPEMOD} [MATRIXLAYOUT] SCOPE DATATYPE [TEMPLATEARGS]
 export interface NodeType extends NodeBase {
     readonly nodeName: NodeName.Type
-    readonly isConst: boolean,
+    readonly typeModList: TypeModifier[],
     readonly scope: NodeScope | undefined,
     readonly dataType: NodeDataType,
     readonly typeTemplates: NodeType[],
